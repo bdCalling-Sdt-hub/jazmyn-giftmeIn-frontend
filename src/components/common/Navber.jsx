@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className="container h-[100px] mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <Link href={'/'}><Image src="/logo/logo.png" alt="GiftmeIn Logo" width={131} height={53} className='cursor-pointer' /></Link>
+          <Link href={'/'}><Image src="/logo/logo.png" alt="GiftmeIn Logo" width={161} height={70} className='cursor-pointer ' /></Link>
         </div>
 
         {/* Navigation Links */}
@@ -68,9 +68,9 @@ const Navbar = () => {
             <img
               src="/images/userProfile.jpg"
               alt="Profile"
-              className="w-8 h-8 border-2 border-primary rounded-full object-cover"
+              className="w-[45px] h-[45px] border-2 border-primary rounded-full object-cover"
             />
-            <span className="text-dark font-medium">Sazzad</span>
+            <span className="text-[#333333] font-semibold">Sazzad</span>
           </div>
         </div>
 

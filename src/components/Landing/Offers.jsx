@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] }); 
 
 const AccordionItem = ({ title, description, icon: Icon }) => {
   const [expanded, setExpanded] = useState(false);
@@ -11,7 +13,7 @@ const AccordionItem = ({ title, description, icon: Icon }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mb-4 shadow-slate-600">
       <div
         onClick={toggleAccordion}
         className={`flex items-center justify-between cursor-pointer  ${
@@ -35,7 +37,7 @@ const AccordionItem = ({ title, description, icon: Icon }) => {
         animate={{ height: expanded ? 'auto' : 0 }}
         className="overflow-hidden"
       >
-        <p className="text-base p-4 select-none text-[#65728E]">{description}</p>
+        <p className="text-base p-4 select-none text-[#65728E] text-[16px]">{description}</p>
       </motion.div>
     </div>
   );
@@ -68,21 +70,21 @@ const Offers = () => {
   ];
 
   return (
-    <section className="h-[861px] flex justify-center items-center">
-      <div className="w-[1209px] flex flex-col gap-6 h-auto rounded-lg p-6">
-        <div className="flex flex-col text-center items-center gap-3">
-          <h1 className="text-primary font-bold text-[17px] leading-[30px] uppercase">
+    <section className="flex justify-center items-center pt-[60px] pb-[80px]">
+      <div className="container ">
+        <div className="flex flex-col text-center items-center gap-2">
+          <h1 className="text-primary font-bold text-[17px] leading-[30px] tracking-[5px] uppercase">
             Features
           </h1>
-          <h3 className="text-[36px] font-bold leading-[40px]">
+          <h3 className={`font-bold text-[36px]  tracking-wide ${inter.className}`}>
             What<span className="text-primary"> We Offer</span>
           </h3>
-          <p className="font-normal text-base text-gray-600 leading-[24px] max-w-[700px] px-5">
+          <p className="font-normal text-center text-base text-gray-600 pt-1 lg:w-[740px] ">
             Thoughtful surprises, personalized touches, and seamless event tracking—making every moment unforgettable.
           </p>
         </div>
-        <div className="flex flex-col lg:flex-row justify-center items-center p-2 gap-6">
-          <div className="w-full max-w-lg">
+        <div className="flex flex-col lg:flex-row justify-center items-center pt-[50px] gap-6">
+          <div className="">
             {accordionData.map((item, index) => (
               <AccordionItem key={index} title={item.title} description={item.description} icon={item.icon} />
             ))}
@@ -90,7 +92,7 @@ const Offers = () => {
 
           {/* Right Section - Image */}
           <div className="flex justify-center select-none items-center">
-            <Image src={'/images/offer.png'} width={690} height={517} alt="offer" />
+            <Image src={'/images/offer.png'} width={710} height={537} alt="offer" />
           </div>
         </div>
       </div>

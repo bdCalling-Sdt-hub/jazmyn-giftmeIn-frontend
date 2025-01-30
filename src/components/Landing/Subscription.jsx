@@ -3,22 +3,23 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MonthlyData } from "../../util/planData";
-
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] });
 const Subscription = ({route}) => {
   const [isMonthly, setIsMonthly] = useState(true);
 
   return (
-    <section className="h-[1130px] flex justify-center items-center">
-      <div className="w-[1207px] h-[987px] rounded-lg bg-white p-10">
+    <section className=" flex justify-center items-center">
+      <div className=" container rounded-lg bg-white p-10">
          {/* Header Section  */}
-        <div className="flex flex-col text-center items-center gap-3">
-          {route !== "/subscriptions" && <h1 className="text-primary font-bold text-[17px] leading-[30px] uppercase">
+        <div className="flex flex-col text-center items-center gap-2  ">
+          {route !== "/subscriptions" && <h1 className="text-primary font-bold text-[17px]  uppercase tracking-[5px]">
             Subscription
           </h1>}
-          <h3 className="text-[36px] font-bold leading-[40px]">
+          <h3 className={`font-bold text-[36px]  tracking-wide ${inter.className}`}>
             Choose your <span className="text-primary">plan</span>
           </h3>
-          <p className="font-normal text-gray-600 leading-[24px] max-w-[700px]">
+          <p className="font-normal text-gray-600  max-w-[700px]">
             Flexible plans for every gifting need—find the perfect fit for you.
           </p>
         </div>

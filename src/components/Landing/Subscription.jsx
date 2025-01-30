@@ -1,0 +1,115 @@
+"use client";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { MonthlyData } from "../../util/planData";
+
+const Subscription = ({route}) => {
+  const [isMonthly, setIsMonthly] = useState(true);
+
+  return (
+    <section className="h-[1130px] flex justify-center items-center">
+      <div className="w-[1207px] h-[987px] rounded-lg bg-white p-10">
+         {/* Header Section  */}
+        <div className="flex flex-col text-center items-center gap-3">
+          {route !== "/subscriptions" && <h1 className="text-primary font-bold text-[17px] leading-[30px] uppercase">
+            Subscription
+          </h1>}
+          <h3 className="text-[36px] font-bold leading-[40px]">
+            Choose your <span className="text-primary">plan</span>
+          </h3>
+          <p className="font-normal text-gray-600 leading-[24px] max-w-[700px]">
+            Flexible plans for every gifting need—find the perfect fit for you.
+          </p>
+        </div>
+
+        {/* Subscription Toggle (Monthly/Yearly) */}
+        <div className="flex items-center justify-center mt-5">
+          <div className="relative flex items-center border border-gray-100 rounded shadow-md w-[300px] h-[50px]">
+            {/* Highlight (motion.div) */}
+            <motion.div
+              className="absolute w-1/2 h-full bg-pink-500 rounded z-0"
+              layout
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ x: isMonthly ? 0 : "50%" }}
+              animate={{ x: isMonthly ? 0 : "100%" }}
+            />
+
+            {/* Monthly Button */}
+            <button
+              className={`relative z-10 w-1/2 text-center text-sm font-medium transition ${
+                isMonthly ? "text-white" : "text-gray-700"
+              }`}
+              onClick={() => setIsMonthly(true)}
+            >
+              Monthly
+            </button>
+
+            {/* Yearly Button */}
+            <button
+              className={`relative z-10 w-1/2 text-center text-sm font-medium transition ${
+                !isMonthly ? "text-white" : "text-gray-700"
+              }`}
+              onClick={() => setIsMonthly(false)}
+            >
+              Yearly <span className="text-gray-600">(Save 20%)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Subscription Plan Details */}
+        <section className="flex items-start gap-[24px] mt-10">
+        {isMonthly
+  ? MonthlyData
+      .filter((data) => !(route === "/subscriptions" && data.price === 0))
+      .map((data) => (
+        <motion.div
+          key={data.id}
+          className={`${route !== "/subscriptions"? "w-[284px]":"w-[365px]"} rounded-[7px] flex flex-col gap-3 border ${data.recoment ? "border-primary":"border-gray-100 p-[18px]"}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {data.recoment && <div className="bg-[#F82BA9] rounded-t-[7px] p-2 text-center text-white">Recomended</div>}
+          
+          <h3 className={`font-medium text-lg leading-[25px] text-[#160E4B] ${data.recoment && "px-[18px]"}`}>
+            {data.type}
+          </h3>
+          <h3 className={`font-semibold text-[37px] leading-[52px] ${data.recoment && "px-[18px]"}`}>
+            ${data.price}{" "}
+            <span className="text-[#868C98] text-[12px] leading-[18px]">
+              / {data.duration === "month" ? "month" : "7 Days"}
+            </span>
+          </h3>
+          <p className={`text-[#65728E] font-medium text-[12px] leading-[19px] ${data.recoment && "px-[18px]"}`}>
+            {data.desc}
+          </p>
+          <div className={`flex justify-center ${data.recoment && "px-[18px]"}`}>
+            <Image src={"/logo/demo.svg"} width={245} height={15} alt="frame" />
+          </div>
+          <div className={`flex flex-col gap-[12px] ${data.recoment && "px-[18px] pb-[18px]"}`}>
+            {data.features.map((feature, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Image src={"/logo/checkmark.png"} width={20} height={20} alt="check mark" />
+                <p className="text-xs text-[#65728E] font-normal">{feature}</p>
+              </div>
+            ))}
+            <button className="bg-[#FEEDF7] rounded-[8px] border border-[#F82BA9B2] text-primary px-[12px] py-[9px]">
+              Choose Plan
+            </button>
+          </div>
+        </motion.div>
+      ))
+  : (
+    <p className="text-gray-600 flex justify-start">
+      <span className="font-bold">Yearly Plan</span> and will save 20%!
+    </p>
+  )}
+
+        </section>
+      </div>
+    </section>
+  );
+};
+
+export default Subscription;

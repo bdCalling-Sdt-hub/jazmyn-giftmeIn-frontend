@@ -80,7 +80,7 @@ const Navbar = () => {
                                     height={24}
                               />
                               <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
-                              <Link href={'/profile'} className="flex items-center cursor-pointer space-x-2">
+                              <Link href={'/dashboard/profile'} className="flex items-center cursor-pointer space-x-2">
                                     <img
                                           src="/images/userProfile.jpg"
                                           alt="Profile"

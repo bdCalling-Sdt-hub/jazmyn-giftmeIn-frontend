@@ -83,6 +83,10 @@ const DashboardSidebar = () => {
                                     </Upload>
                               </div>
                         </div>
+                        <div className="mt-2">
+                              <h3 className="text-lg font-bold mb-1">Jazmyne Doe</h3>
+                              <p className="text-sm text-gray-600">demo@example.com</p>
+                        </div>
                   </div>
 
                   {/* Menu Section */}

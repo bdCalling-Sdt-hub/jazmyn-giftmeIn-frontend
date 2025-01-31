@@ -31,7 +31,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                                     width={282}
                                     theme="light"
                                     // breakpoint="lg"
-                                    collapsedWidth={90}
+                                    collapsedWidth={100}
                                     // collapsible
                                     className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63]"
                                     collapsed={collapsed}
@@ -50,7 +50,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                                                 paddingInline: 20,
                                           }}
                                     >
-                                          <button onClick={() => setCollapsed(!collapsed)}>
+                                          <button className="text-primary" onClick={() => setCollapsed(!collapsed)}>
                                                 {collapsed ? (
                                                       <AiOutlineRightSquare size={30} />
                                                 ) : (

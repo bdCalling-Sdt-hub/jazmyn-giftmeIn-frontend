@@ -1,5 +1,8 @@
 import Image from 'next/image';
-import React from 'react';
+import React from 'react'; 
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] });
+
 
 const choiceData = [
   {
@@ -30,11 +33,11 @@ const choiceData = [
 ];
 
 const ChoiceCard = ({ image, name, description }) => (
-  <div className="w-[282px] h-[310px] rounded-[25px] bg-white shadow-lg p-8 flex flex-col items-center justify-evenly space-y-4">
+  <div className=" rounded-[25px] bg-white shadow-lg p-6 flex flex-col items-center justify-evenly space-y-4">
     <div className="bg-primary flex items-center justify-center p-4 rounded-full">
       <Image src={image} height={50} width={50} alt={name} />
     </div>
-    <h3 className="text-[#160E4B] text-xl font-semibold leading-[26px] text-center">
+    <h3 className="text-[#160E4B] text-xl font-bold leading-[26px] text-center">
       {name}
     </h3>
     <p className="text-[#65728E] text-base text-center">{description}</p>
@@ -43,28 +46,28 @@ const ChoiceCard = ({ image, name, description }) => (
 
 const PerfectChoice = () => {
   return (
-    <section className="bg-[#FEEDF7] h-[727px] flex justify-center items-center">
+    <section className="bg-[#FEEDF7] py-[120px] flex justify-center items-center">
       <div className="w-[1218px] h-[487px] flex flex-col justify-between">
         <header className="flex flex-col gap-3">
-          <h3 className="font-bold text-primary leading-[30px] text-[17px]">
+          <h3 className="font-bold text-primary leading-[30px] text-[17px] tracking-[5px]">
             Why Choose Us
           </h3>
-          <div className="flex items-end gap-[72px]">
-            <h2 className="font-bold text-[34px] leading-[40px]">
+          <div className="flex items-end gap-[62px]">
+            <h2 className={`font-bold text-[34px] leading-[40px] ${inter.className}`}>
               Why{' '}
               <span className="text-primary">
-                We’re the Perfect Choice
+                We’re The Perfect Choice
               </span>{' '}
-              for Your Gifting Needs
+              For Your Gifting Needs
             </h2>
-            <p className="text-base font-normal leading-[28px] text-grayColor">
+            <p className={`text-base font-normal leading-[28px] text-[#757F95] ${inter.className}`}>
               At our core, we believe gifting should be simple, thoughtful, and
               joyful. Here’s how we make it all about you and your loved ones.
             </p>
           </div>
         </header>
 
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-4 gap-4">
           {choiceData.map((item) => (
             <ChoiceCard
               key={item.id}

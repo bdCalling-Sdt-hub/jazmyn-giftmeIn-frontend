@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
-
+import { Inter } from 'next/font/google';
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] }); 
 const reviews = [
   {
     id: 1,
@@ -69,13 +70,13 @@ const reviews = [
 
 const CustomerReviewCarousel = () => {
   return (
-    <section className="h-[717px] flex justify-center items-center bg-gray-50 py-10">
-      <div className="w-[1194px] h-[517px] rounded-lg">
+    <section className=" flex justify-center items-center bg-gray-50 py-[120px]">
+      <div className="container rounded-lg">
         <div className="text-center mb-6">
-          <h3 className="font-bold text-lg text-primary leading-[30px] uppercase">
+          <h3 className="font-bold text-lg text-primary leading-[30px] uppercase tracking-[5px]">
             Testimonials
           </h3>
-          <h3 className="text-3xl font-bold leading-[50px] text-gray-800">
+          <h3 className={`font-bold text-[36px]  tracking-wide ${inter.className}`}>
             What Our Clients <span className="text-primary">Say</span> About Us
           </h3>
         </div>

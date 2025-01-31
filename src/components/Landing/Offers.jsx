@@ -70,7 +70,7 @@ const Offers = () => {
   ];
 
   return (
-    <section className="flex justify-center items-center pt-[60px] pb-[80px]">
+    <section className="flex justify-center items-center pb-[120px]">
       <div className="container ">
         <div className="flex flex-col text-center items-center gap-2">
           <h1 className="text-primary font-bold text-[17px] leading-[30px] tracking-[5px] uppercase">

@@ -46,7 +46,7 @@ const Navbar = () => {
 
   return (
     <header className="bg-white shadow-md px-6">
-      <div className="container h-[100px] mx-auto flex justify-between items-center">
+      <div className="container h-[80px] mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <Link href={'/'}><Image src="/logo/logo.png" alt="GiftmeIn Logo" width={161} height={70} className='cursor-pointer ' /></Link>

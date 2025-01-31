@@ -19,14 +19,14 @@ const Subscription = ({route}) => {
           <h3 className={`font-bold text-[36px]  tracking-wide ${inter.className}`}>
             Choose your <span className="text-primary">plan</span>
           </h3>
-          <p className="font-normal text-gray-600  max-w-[700px]">
+          <p className="font-normal text-gray-600 tracking-wider pt-1">
             Flexible plans for every gifting need—find the perfect fit for you.
           </p>
         </div>
 
         {/* Subscription Toggle (Monthly/Yearly) */}
-        <div className="flex items-center justify-center mt-5">
-          <div className="relative flex items-center border border-gray-100 rounded shadow-md w-[300px] h-[50px]">
+        <div className="flex items-center justify-center mt-10">
+          <div className="relative flex items-center border border-gray-100 rounded shadow-md w-[350px] h-[60px]">
             {/* Highlight (motion.div) */}
             <motion.div
               className="absolute w-1/2 h-full bg-pink-500 rounded z-0"
@@ -60,23 +60,22 @@ const Subscription = ({route}) => {
 
         {/* Subscription Plan Details */}
         <section className="flex items-start gap-[24px] mt-10">
-        {isMonthly
-  ? MonthlyData
+        { MonthlyData
       .filter((data) => !(route === "/subscriptions" && data.price === 0))
       .map((data) => (
         <motion.div
           key={data.id}
-          className={`${route !== "/subscriptions"? "w-[284px]":"w-[365px]"} rounded-[7px] flex flex-col gap-3 border ${data.recoment ? "border-primary":"border-gray-100 p-[18px]"}`}
+          className={`${route !== "/subscriptions"? "w-[284px]":"w-[365px]"} rounded-[7px] flex flex-col gap-3 border shadow-md  ${data.recoment ? "border-primary":"border-gray-100 hover:border-primary p-[18px]"}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {data.recoment && <div className="bg-[#F82BA9] rounded-t-[7px] p-2 text-center text-white">Recomended</div>}
+          {data.recoment && <div className="bg-[#F82BA9] rounded-t-[7px] p-2 text-center text-white">Recommended</div>}
           
-          <h3 className={`font-medium text-lg leading-[25px] text-[#160E4B] ${data.recoment && "px-[18px]"}`}>
+          <h3 className={`font-medium text-lg leading-[20px] text-[#160E4B] ${data.recoment && "px-[18px]"}`}>
             {data.type}
           </h3>
-          <h3 className={`font-semibold text-[37px] leading-[52px] ${data.recoment && "px-[18px]"}`}>
+          <h3 className={`font-semibold text-[37px] leading-[42px] ${data.recoment && "px-[18px]"}`}>
             ${data.price}{" "}
             <span className="text-[#868C98] text-[12px] leading-[18px]">
               / {data.duration === "month" ? "month" : "7 Days"}
@@ -101,11 +100,7 @@ const Subscription = ({route}) => {
           </div>
         </motion.div>
       ))
-  : (
-    <p className="text-gray-600 flex justify-start">
-      <span className="font-bold">Yearly Plan</span> and will save 20%!
-    </p>
-  )}
+ }
 
         </section>
       </div>

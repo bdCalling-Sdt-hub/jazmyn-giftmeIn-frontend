@@ -37,6 +37,9 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
                                     Modal: {
                                           colorBgContainer: '#FEEDF7',
                                     },
+                                    Table: {
+                                          headerBg: '#feedf7',
+                                    },
                               },
                         }}
                   >

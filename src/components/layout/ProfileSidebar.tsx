@@ -6,6 +6,7 @@ import { Edit2, User, Calendar, Gift, ShoppingBag, Heart, Crown, Settings, LogOu
 import { UploadChangeParam } from 'antd/es/upload';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { FaExclamation } from 'react-icons/fa';
 
 const DashboardSidebar = () => {
       const [previewImage, setPreviewImage] = useState<undefined | string>('https://i.ibb.co.com/yN2vT01/me.jpg');
@@ -18,7 +19,25 @@ const DashboardSidebar = () => {
             };
       };
       const handleLogout = () => {
-            toast.success('Logout successfully');
+            Modal.confirm({
+                  centered: true,
+                  title: 'Close your account',
+                  content: 'Are you sure you want to close your account? This action cannot be undone.',
+                  okText: 'Confirm',
+                  cancelText: 'Cancel',
+                  icon: <FaExclamation className="mx-2" size={24} color="#F82BA9" />,
+                  okButtonProps: {
+                        style: { backgroundColor: '#F82BA9', borderColor: '#ff4d4f', color: '#fff' },
+                  },
+
+                  cancelButtonProps: {
+                        style: { color: '#F82BA9', borderColor: 'transparent', fontWeight: 'bold' },
+                  },
+
+                  onOk: () => {
+                        toast.success('Logout successfully');
+                  },
+            });
       };
       const sidebarItemsMentees = [
             {

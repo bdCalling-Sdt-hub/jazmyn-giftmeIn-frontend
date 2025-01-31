@@ -1,8 +1,10 @@
 'use client';
 
 import { Button } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import EventCalendar from './EventCalendar';
+import Modal from '@/components/Reusable/Modal';
+import AddEvent from './AddEvent';
 
 const events = [
       {
@@ -43,13 +45,15 @@ const events = [
 ];
 
 const EventPage = () => {
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
       return (
-            <div className="flex  justify-between min-h-screen">
-                  <div className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63] max-w-lg p-6">
+            <div className="flex gap-5  justify-between min-h-screen">
+                  <div className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63] w-full p-6">
                         {/* Next Event Section */}
-                        <div className="b p-4 rounded-lg mb-6">
+                        <div className="bg-white drop-shadow p-4 rounded-lg mb-6">
                               <div className="flex items-center gap-3">
-                                    <div className="bg-[#FFF1F8] w-[90px] h-[90px] rounded-lg flex flex-col items-center justify-center">
+                                    <div className="bg-[#FFF1F8]  w-[90px] h-[90px] rounded-lg flex flex-col items-center justify-center">
                                           <div className="text-primary text-4xl font-bold">3</div>
                                           <div className="text-black text-2xl">Jan</div>
                                     </div>
@@ -68,7 +72,7 @@ const EventPage = () => {
                                     {events.map((event, index) => (
                                           <div
                                                 key={index}
-                                                className="bg-white p-4 rounded-lg shadow-sm border-[1px] border-[#dfdddd63] flex items-center gap-3"
+                                                className="bg-white p-4 rounded-lg drop-shadow flex items-center gap-3"
                                           >
                                                 <div className="bg-[#FFF1F8] w-[70px] h-[70px] rounded-lg flex flex-col items-center justify-center">
                                                       <div className="text-primary text-3xl font-bold">
@@ -89,7 +93,7 @@ const EventPage = () => {
                   </div>
 
                   <div className="w-full max-w-[378px] space-y-6">
-                        <Button style={{ width: '100%' }} type="primary">
+                        <Button onClick={() => setIsModalOpen(true)} style={{ width: '100%' }} type="primary">
                               Add Event
                         </Button>
 
@@ -97,6 +101,8 @@ const EventPage = () => {
                               <EventCalendar />
                         </div>
                   </div>
+
+                  <Modal width={700} setOpen={setIsModalOpen} open={isModalOpen} body={<AddEvent />} />
             </div>
       );
 };

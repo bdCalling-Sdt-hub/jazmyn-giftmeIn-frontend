@@ -10,7 +10,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
                   <ConfigProvider
                         theme={{
                               token: {
-                                    fontFamily: 'Poppins',
+                                    // fontFamily: 'Poppins',
                                     fontSize: 16,
                                     colorPrimary: '#F82BA9',
                               },
@@ -28,8 +28,14 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
                                           controlHeight: 40,
                                           colorIcon: '#9A9F9E',
                                     },
+                                    DatePicker: {
+                                          controlHeight: 40,
+                                    },
                                     Button: {
                                           controlHeight: 40,
+                                    },
+                                    Modal: {
+                                          colorBgContainer: '#FEEDF7',
                                     },
                               },
                         }}

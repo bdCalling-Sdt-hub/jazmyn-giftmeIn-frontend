@@ -1,7 +1,8 @@
-import type { NextConfig } from 'next';
+/** @type {import('next').NextConfig} */
 
-const nextConfig: NextConfig = {
-      /* config options here */
+const nextConfig = {
+      reactStrictMode: true,
+      swcMinify: true,
       images: {
             remotePatterns: [
                   {
@@ -16,4 +17,4 @@ const nextConfig: NextConfig = {
       },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

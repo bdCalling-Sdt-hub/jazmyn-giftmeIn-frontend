@@ -31,7 +31,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                                     width={282}
                                     theme="light"
                                     // breakpoint="lg"
-                                    collapsedWidth={100}
+                                    collapsedWidth={0}
                                     // collapsible
                                     className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63]"
                                     collapsed={collapsed}

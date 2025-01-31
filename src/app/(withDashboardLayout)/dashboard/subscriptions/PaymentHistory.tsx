@@ -93,6 +93,7 @@ const PaymentHistory = () => {
 
                   <div className="bg-white rounded-lg border">
                         <Table
+                              scroll={{ x: true }}
                               columns={columns}
                               dataSource={paymentData}
                               pagination={{

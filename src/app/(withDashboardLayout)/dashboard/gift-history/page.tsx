@@ -158,6 +158,7 @@ const GiftHistoryPage = () => {
                   {/* Table */}
                   <div className="bg-white rounded-lg shadow">
                         <Table
+                              scroll={{ x: true }}
                               columns={columns}
                               dataSource={giftHistoryData}
                               pagination={{

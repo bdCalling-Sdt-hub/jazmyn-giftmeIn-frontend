@@ -48,7 +48,7 @@ const EventPage = () => {
       const [isModalOpen, setIsModalOpen] = useState(false);
 
       return (
-            <div className="flex gap-5  justify-between min-h-screen">
+            <div className="md:flex  gap-5  justify-between min-h-screen">
                   <div className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63] w-full p-6">
                         {/* Next Event Section */}
                         <div className="bg-white drop-shadow p-4 rounded-lg mb-6">

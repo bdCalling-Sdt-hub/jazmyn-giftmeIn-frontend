@@ -113,6 +113,7 @@ const OrderHistoryPage = () => {
 
                   <div className="bg-white rounded-lg shadow">
                         <Table
+                              scroll={{ x: true }}
                               columns={columns}
                               dataSource={orderHistoryData}
                               pagination={{

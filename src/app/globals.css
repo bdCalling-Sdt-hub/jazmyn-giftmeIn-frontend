@@ -2,4 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-  
+.ant-layout {
+      background-color: #fff !important;
+}
+.hide-scrollbar::-webkit-scrollbar {
+      display: none;
+}

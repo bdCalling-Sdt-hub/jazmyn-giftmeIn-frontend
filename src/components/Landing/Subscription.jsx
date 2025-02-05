@@ -8,22 +8,21 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
+
 const Subscription = ({ route }) => {
   const [isMonthly, setIsMonthly] = useState(true);
 
   return (
-    <section className=" flex justify-center items-center">
-      <div className=" container rounded-lg bg-white p-10">
-        {/* Header Section  */}
-        <div className="flex flex-col text-center items-center gap-2  ">
+    <section className="flex justify-center items-center min-h-screen py-10">
+      <div className="container max-w-screen-xl px-4 rounded-lg bg-white">
+        {/* Header Section */}
+        <div className="flex flex-col text-center items-center gap-2">
           {route !== "/subscriptions" && (
-            <h1 className="text-primary font-bold text-[17px]  uppercase tracking-[5px]">
+            <h1 className="text-primary font-bold text-[17px] uppercase tracking-[5px]">
               Subscription
             </h1>
           )}
-          <h3
-            className={`font-bold text-[36px]  tracking-wide ${inter.className}`}
-          >
+          <h3 className={`font-bold md:text-[36px] text-[30px] tracking-wide ${inter.className}`}>
             Choose your <span className="text-primary">plan</span>
           </h3>
           <p className="font-normal text-gray-600 tracking-wider pt-1">
@@ -66,18 +65,14 @@ const Subscription = ({ route }) => {
         </div>
 
         {/* Subscription Plan Details */}
-        <section className="flex items-start gap-[24px] mt-10">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
           {MonthlyData.filter(
             (data) => !(route === "/subscriptions" && data.price === 0)
           ).map((data) => (
             <motion.div
               key={data.id}
-              className={`${
-                route !== "/subscriptions" ? "w-[284px]" : "w-[365px]"
-              } rounded-[7px] flex flex-col gap-3 border shadow-md  ${
-                data.recoment
-                  ? "border-primary"
-                  : "border-gray-100 hover:border-primary p-[18px]"
+              className={`rounded-[7px] flex flex-col gap-3 border shadow-md ${
+                data.recoment ? "border-primary" : "border-gray-100 hover:border-primary p-[18px]"
               }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -113,11 +108,7 @@ const Subscription = ({ route }) => {
               >
                 {data.desc}
               </p>
-              <div
-                className={`flex justify-center ${
-                  data.recoment && "px-[18px]"
-                }`}
-              >
+              <div className={`flex justify-center ${data.recoment && "px-[18px]"}`}>
                 <Image
                   src={"/logo/demo.svg"}
                   width={245}
@@ -126,9 +117,7 @@ const Subscription = ({ route }) => {
                 />
               </div>
               <div
-                className={`flex flex-col gap-[12px] ${
-                  data.recoment && "px-[18px] pb-[18px]"
-                }`}
+                className={`flex flex-col gap-[12px] ${data.recoment && "px-[18px] pb-[18px]"}`}
               >
                 {data.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">
@@ -138,9 +127,7 @@ const Subscription = ({ route }) => {
                       height={20}
                       alt="check mark"
                     />
-                    <p className="text-xs text-[#65728E] font-normal">
-                      {feature}
-                    </p>
+                    <p className="text-xs text-[#65728E] font-normal">{feature}</p>
                   </div>
                 ))}
                 <button className="bg-[#FEEDF7] rounded-[8px] border border-[#F82BA9B2] text-primary px-[12px] py-[9px]">

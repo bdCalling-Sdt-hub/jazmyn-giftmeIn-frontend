@@ -4,4 +4,12 @@
   background-position: center;
   background-repeat: no-repeat;
   height: calc(100vh - 100px);
+};
+
+
+
+@media screen and (min-width: 480px) {
+  .bannerBg {
+    height: 400px;
+  };
 }

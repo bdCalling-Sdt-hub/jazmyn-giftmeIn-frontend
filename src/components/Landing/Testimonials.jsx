@@ -76,7 +76,7 @@ const CustomerReviewCarousel = () => {
           <h3 className="font-bold text-lg text-primary leading-[30px] uppercase tracking-[5px]">
             Testimonials
           </h3>
-          <h3 className={`font-bold text-[36px]  tracking-wide ${inter.className}`}>
+          <h3 className={`font-bold sm:text-[36px] text-[25px]  tracking-wide ${inter.className}`}>
             What Our Clients <span className="text-primary">Say</span> About Us
           </h3>
         </div>
@@ -85,18 +85,15 @@ const CustomerReviewCarousel = () => {
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
           loop
-          slidesPerView={4}
+          slidesPerView={1}
           spaceBetween={20}
           breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 4,
-            },
+            320: { slidesPerView: 1 },
+            480: { slidesPerView: 1 },
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
           }}
         >
           {reviews.map((review) => (
@@ -105,7 +102,7 @@ const CustomerReviewCarousel = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className=" w-[282px] h-[318px] select-none relative flex flex-col gap-5 p-[25px] border-gray-300  text-center"
+                className="  select-none relative flex flex-col gap-5 sm:px-[25px] px-0 py-[35px]  border-gray-300  text-center"
               >
                 <div className="flex flex-col gap-4 rounded-lg">
                   <div className="flex items-center gap-2">

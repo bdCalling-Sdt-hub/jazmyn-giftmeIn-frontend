@@ -36,20 +36,20 @@ export default function BannerCarousel() {
 
         {[...Array(3)].map((_, index) => (
           <SwiperSlide key={index}>
-            <div className="bannerBg bg-no-repeat bg-cover bg-center h-[calc(100vh-100px)]">
+            <div className="bannerBg bg-cover bg-center bg-no-repeat h-[calc(100vh-100px)]">
               <div className=" flex items-center justify-center h-full ">
-                <div className="flex flex-col container gap-[24px]">
-                  <h3 className="text-xl leading-[40px] font-bold text-primary tracking-[5px] uppercase">
+                <div className="flex flex-col container sm:gap-[24px] gap-[12px]">
+                  <h3 className="sm:text-xl text-sm leading-[40px] font-bold text-primary tracking-[5px] uppercase">
                     Never Miss a Special Day!
                   </h3>
-                  <h3 className="font-bold text-[60px] leading-[80px] text-[#160E4B]">
+                  <h3 className="font-bold md:text-[60px] sm:text-[50px] text-[30px] sm:leading-[80px] leading-[40px] text-[#160E4B]">
                     Personalized Gifts For <br /> Every Occasion.
                   </h3>
-                  <p className="text-[#160E4B] font-normal text-[25px] leading-[44px]">
+                  <p className="text-[#160E4B] font-normal md:text-[25px] sm:text-[18px] text-xs sm:leading-[44px] leading-[25px]">
                     Track birthdays, plan surprises, and get the coolest gifts <br />
                     delivered—effortlessly.
                   </p>
-                  <button className="flex items-center gap-[10px] w-[197px] bg-primary text-[20px] font-semibold leading-[30px] text-white px-[13px] py-[17px] rounded-[12px] transition-all">
+                  <button className="flex items-center gap-[10px] sm:w-[197px] w-[150px] bg-primary sm:text-[20px] text-sm font-semibold sm:leading-[30px] leading-[10px] text-white px-[13px] sm:py-[17px] py-[15px] rounded-[12px] transition-all">
                     Get Started
                     <ArrowRight size={20} />
                   </button>

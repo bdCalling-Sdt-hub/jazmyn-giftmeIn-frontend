@@ -10,7 +10,9 @@ const page = () => {
     return (
         <section>
             <BreadcrumbsBanner pageName={"Subscription Plans"} routeName={"Subscription Plan s"} />
+            <div className='sm:py-[100px] py-[50px]'>
             <Subscription route={pathname} />
+            </div>
         </section>
     );
 };

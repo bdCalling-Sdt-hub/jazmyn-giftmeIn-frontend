@@ -24,38 +24,24 @@ const Process = () => {
             <div className="flex items-center justify-center w-24 h-24 bg-[#FEEDF7] rounded-full shadow-lg">
               <Image src="/logo/events.png" alt="Add Events" width={48} height={48} />
             </div>
-            <h3 className="mt-6 text-xl font-semibold text-[#160E4B]">Add Events & Preferences</h3>
-            <p className="mt-2 text-base text-[#65728E]">Input birthdays, anniversaries, and holidays</p>
+            <h3 className="mt-6 text-xl font-semibold text-[#160E4B]">Choose a Plan</h3>
+            <p className="mt-2 text-base text-[#65728E]">Select the subscription plan that fits your gifting needs</p>
           </div>
 
           {/* Arrow 1 */}
-          <Image
-            src="/logo/following.png"
-            alt="Arrow"
-            width={120}
-            height={40}
-            className="hidden lg:block"
-          />
+          <Image src="/logo/following.png" alt="Arrow" width={120} height={40} className="hidden lg:block" />
 
           {/* Step 2 */}
           <div className="flex flex-col items-center text-center max-w-xs">
             <div className="flex items-center justify-center w-24 h-24 bg-[#FEEDF7] rounded-full shadow-lg">
               <Image src="/logo/plan.png" alt="Choose Plan" width={48} height={48} />
             </div>
-            <h3 className="mt-6 text-xl font-semibold text-[#160E4B]">Choose a Plan</h3>
-            <p className="mt-2 text-base text-[#65728E]">
-              Select the subscription plan that fits your gifting needs
-            </p>
+            <h3 className="mt-6 text-xl font-semibold text-[#160E4B]">Add Events & Preferences</h3>
+            <p className="mt-2 text-base text-[#65728E]">Input birthdays, anniversaries, and holidays</p>
           </div>
 
           {/* Arrow 2 */}
-          <Image
-            src="/logo/following2.png"
-            alt="Arrow"
-            width={120}
-            height={40}
-            className="hidden lg:block"
-          />
+          <Image src="/logo/following2.png" alt="Arrow" width={120} height={40} className="hidden lg:block" />
 
           {/* Step 3 */}
           <div className="flex flex-col items-center text-center max-w-xs">

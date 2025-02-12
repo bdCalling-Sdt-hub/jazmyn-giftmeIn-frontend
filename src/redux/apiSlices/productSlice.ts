@@ -29,6 +29,14 @@ const authApi = api.injectEndpoints({
       providesTags: ['product'],
     }),
 
+    getSingleProduct: builder.query({
+      query: (id) => ({
+        url: `/product/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['product'],
+    }),
+
     // categories
     getCategories: builder.query({
       query: () => ({
@@ -40,4 +48,4 @@ const authApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetAllProductsQuery, useGetCategoriesQuery } = authApi;
+export const { useGetAllProductsQuery, useGetSingleProductQuery, useGetCategoriesQuery } = authApi;

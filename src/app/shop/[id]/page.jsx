@@ -6,40 +6,14 @@ import productImg1 from '../../../assets/image1.jpg';
 import productImg2 from '../../../assets/image2.jpg';
 import productImg3 from '../../../assets/giftImage3.jpg';
 import productImg4 from '../../../assets/giftImage4.jpg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { ConfigProvider, Tabs } from 'antd';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import BreadcrumbsBanner from '@/components/common/BreadcrumbsBanner';
-
-const productData = {
-  title: 'Gift Package ',
-  reviews: [
-    {
-      name: 'John Doe',
-      rating: 5,
-      comment: 'This gift package is amazing. I love it!',
-    },
-    {
-      name: 'Jane Smith',
-      rating: 4,
-      comment: "I really dislike this gift package. It's not what I expected.",
-    },
-  ],
-  price: {
-    oneUnit: 100,
-    twoUnit: 200,
-    threeUnit: 300,
-    fourUnit: 400,
-    fiveUnit: 500,
-  },
-  shortDescription:
-    'Surprise your loved ones with this thoughtful gift package featuring our Bubba Kush THCA Flower. This gift package includes a half pound of Bubba Kush THCA Flower, 2 gift cards, and free shipping. Perfect for special occasions, it offers deep relaxation with a 22.7% THCA level. Available in half and full pounds, it’s ideal for chill evenings.',
-  availability: true,
-  tags: 'Gift Package',
-  category: 'Gift Package',
-};
+import { useParams } from 'next/navigation';
+import { useGetSingleProductQuery } from '@/redux/apiSlices/productSlice';
+import { getImageUrl } from '@/util/getImgUrl';
 
 const totalPrice = 55;
 
@@ -95,10 +69,27 @@ const relatedProductData = [
 ];
 
 const Product = () => {
-  const [mainImage, setMainImage] = useState(productImg1.src);
+  const [mainImage, setMainImage] = useState('');
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
+
+  const { id } = useParams();
+
+  const { data: productData, isLoading } = useGetSingleProductQuery(id);
+
+  useEffect(() => {
+    if (productData) {
+      setMainImage(productData?.featureImage);
+    }
+  }, [productData]);
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  const product = productData?.data;
+  console.log(product);
 
   // Function to calculate total price
 
@@ -117,25 +108,25 @@ const Product = () => {
       label: <p className="md:text-xl">Additional Information</p>,
       children: 'No additional information available.',
     },
-    {
-      key: '3',
-      label: <p className="md:text-xl">Reviews</p>,
-      children: (
-        <div>
-          {productData.reviews.map((review, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="font-bold">{review.name}</h3>
-              <div className="flex gap-1">
-                {Array.from({ length: review.rating }, (_, i) => (
-                  <FaStar key={i} className="text-orange-600" />
-                ))}
-              </div>
-              <p>{review.comment}</p>
-            </div>
-          ))}
-        </div>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: <p className="md:text-xl">Reviews</p>,
+    //   children: (
+    //     <div>
+    //       {productData.reviews.map((review, index) => (
+    //         <div key={index} className="mb-4">
+    //           <h3 className="font-bold">{review.name}</h3>
+    //           <div className="flex gap-1">
+    //             {Array.from({ length: review.rating }, (_, i) => (
+    //               <FaStar key={i} className="text-orange-600" />
+    //             ))}
+    //           </div>
+    //           <p>{review.comment}</p>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
@@ -145,40 +136,44 @@ const Product = () => {
           <div className="md:w-[45%] flex flex-col items-center">
             {/* Main Image */}
             <div className="w-full mb-5">
-              <img className="md:w-[600px] w-[350px] h-[300px] md:h-[440px]" src={mainImage} alt="Main Image" />
+              <img
+                className="md:w-[600px] w-[350px] h-[300px] md:h-[440px]"
+                src={getImageUrl(mainImage)}
+                alt="Main Image"
+              />
             </div>
 
             {/* Thumbnail Images */}
             <div className="grid grid-cols-4 gap-2">
               <img
-                src={productImg1.src}
+                src={getImageUrl(product?.additionalImages[0])}
                 alt="Thumbnail 1"
                 className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(productImg1.src)}
+                onClick={() => setMainImage(product?.additionalImages[0])}
               />
               <img
-                src={productImg2.src}
+                src={getImageUrl(product?.additionalImages[1])}
                 alt="Thumbnail 2"
                 className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(productImg2.src)}
+                onClick={() => setMainImage(product?.additionalImages[1])}
               />
               <img
-                src={productImg3.src}
+                src={getImageUrl(product?.additionalImages[2])}
                 alt="Thumbnail 3"
                 className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(productImg3.src)}
+                onClick={() => setMainImage(product?.additionalImages[2])}
               />
               <img
-                src={productImg4.src}
+                src={getImageUrl(product?.additionalImages[3])}
                 alt="Thumbnail 4"
                 className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(productImg4.src)}
+                onClick={() => setMainImage(product?.additionalImages[3])}
               />
             </div>
           </div>
           <div className="md:space-y-4 md:w-[55%] mt-7 md:mt-0">
-            <h1 className="md:text-3xl text-2xl clash">{productData?.title}</h1>
-            <div className="flex gap-2">
+            <h1 className="md:text-3xl text-2xl clash">{product?.productName}</h1>
+            {/* <div className="flex gap-2">
               <div className="flex gap-1">
                 <FaStar className="text-[#FC2FAD]" />
                 <FaStar className="text-[#FC2FAD]" />
@@ -186,12 +181,12 @@ const Product = () => {
                 <FaStar className="text-[#FC2FAD]" />
                 <FaStar className="text-[#FC2FAD]" />
               </div>
-              <p>{productData?.reviews.length} Reviews</p>
-            </div>
+              <p>{product?.reviews.length} Reviews</p>
+            </div> */}
             <div className="flex gap-3 text-3xl font-bold text-[#FC2FAD]">
-              <p>${productData?.price.oneUnit}</p>
+              <p>${product?.discountedPrice}</p>
             </div>
-            <p className="leading-5">{productData?.shortDescription}</p>
+            <p className="leading-5">{product?.description}</p>
             <div className="flex items-center gap-10 mt-10 md:mt-0">
               <h1 className="font-bold text-2xl">Size:</h1>
               <div>

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { getImageUrl } from '@/util/getImgUrl';
 
 const ProductCard = ({ product }) => {
-  console.log(product);
+  // console.log(product);
 
   return (
     <div className="relative border-2 rounded-2xl md:w-[290px] group bg-white bg-opacity-30  hover:border-primary ">

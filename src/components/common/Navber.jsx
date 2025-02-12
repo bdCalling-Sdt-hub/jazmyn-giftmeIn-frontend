@@ -54,7 +54,7 @@ const Navbar = () => {
   }
 
   const profile = profileData?.data;
-  console.log(profile);
+  // console.log(profile);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);

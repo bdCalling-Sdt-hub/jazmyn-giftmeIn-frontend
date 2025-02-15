@@ -1,6 +1,6 @@
 'use client';
 
-import { FaStar } from 'react-icons/fa';
+import { FaCheckCircle, FaStar } from 'react-icons/fa';
 import ProductCard from '../../../components/common/ProductCard';
 import productImg1 from '../../../assets/image1.jpg';
 import productImg2 from '../../../assets/image2.jpg';
@@ -14,69 +14,20 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useGetSingleProductQuery } from '@/redux/apiSlices/productSlice';
 import { getImageUrl } from '@/util/getImgUrl';
-
-const totalPrice = 55;
-
-const relatedProductData = [
-  {
-    id: 1,
-    image: productImg1,
-    label: 'WHOLESALE',
-    title: 'Bubba Kush',
-    description: 'THCA Flower Pounds Indica | 22.70% THCa | HP, LB',
-    price: '$750 - $1000',
-  },
-  {
-    id: 2,
-    image: productImg1,
-    label: 'PREMIUM',
-    title: 'Pineapple Express',
-    description: 'Sativa | 18.90% THCa | HP, LB',
-    price: '$650 - $900',
-  },
-  {
-    id: 3,
-    image: productImg1,
-    label: 'WHOLESALE',
-    title: 'OG Kush',
-    description: 'Hybrid | 20.50% THCa | HP, LB',
-    price: '$800 - $1100',
-  },
-  {
-    id: 4,
-    image: productImg1,
-    label: 'ORGANIC',
-    title: 'Gelato',
-    description: 'Hybrid | 21.20% THCa | HP, LB',
-    price: '$700 - $950',
-  },
-  {
-    id: 5,
-    image: productImg1,
-    label: 'ORGANIC',
-    title: 'Gelato',
-    description: 'Hybrid | 21.20% THCa | HP, LB',
-    price: '$700 - $950',
-  },
-  {
-    id: 6,
-    image: productImg1,
-    label: 'ORGANIC',
-    title: 'Gelato',
-    description: 'Hybrid | 21.20% THCa | HP, LB',
-    price: '$700 - $950',
-  },
-];
+import { useAddToCartMutation } from '@/redux/apiSlices/cartSlice';
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 
 const Product = () => {
   const [mainImage, setMainImage] = useState('');
-
+  const [selectedColors, setSelectedColors] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
 
   const { id } = useParams();
 
   const { data: productData, isLoading } = useGetSingleProductQuery(id);
+  const [addToCart] = useAddToCartMutation();
+  const { data: userProfile, isLoading: userProfileLoading } = useGetUserProfileQuery();
 
   useEffect(() => {
     if (productData) {
@@ -84,14 +35,16 @@ const Product = () => {
     }
   }, [productData]);
 
-  if (isLoading) {
+  if (isLoading || userProfileLoading) {
     return <h2>Loading...</h2>;
   }
 
   const product = productData?.data;
-  console.log(product);
+  const userId = userProfile?.data?._id;
+  // console.log(userId);
 
   // Function to calculate total price
+  const totalPrice = product?.discountedPrice * quantity;
 
   const onChange = (key) => {
     console.log(key);
@@ -101,33 +54,38 @@ const Product = () => {
     {
       key: '1',
       label: <p className="md:text-xl">Description</p>,
-      children: productData.shortDescription,
+      children: product?.description,
     },
     {
       key: '2',
       label: <p className="md:text-xl">Additional Information</p>,
-      children: 'No additional information available.',
+      children: product?.additionalInfo,
     },
-    // {
-    //   key: '3',
-    //   label: <p className="md:text-xl">Reviews</p>,
-    //   children: (
-    //     <div>
-    //       {productData.reviews.map((review, index) => (
-    //         <div key={index} className="mb-4">
-    //           <h3 className="font-bold">{review.name}</h3>
-    //           <div className="flex gap-1">
-    //             {Array.from({ length: review.rating }, (_, i) => (
-    //               <FaStar key={i} className="text-orange-600" />
-    //             ))}
-    //           </div>
-    //           <p>{review.comment}</p>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   ),
-    // },
   ];
+
+  const handleAddToCart = async (product) => {
+    const data = {
+      user: userId,
+      variations: {
+        size: selectedSize,
+        color: selectedColors,
+        quantity: quantity,
+        product: product?._id,
+      },
+    };
+
+    console.log('cart data', data);
+
+    try {
+      const res = await addToCart(data).unwrap();
+      if (res.success) {
+        toast.success('Added to cart');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
 
   return (
     <>
@@ -137,7 +95,7 @@ const Product = () => {
             {/* Main Image */}
             <div className="w-full mb-5">
               <img
-                className="md:w-[600px] w-[350px] h-[300px] md:h-[440px]"
+                className="md:w-[600px] object-contain w-[350px] h-[300px] md:h-[440px]"
                 src={getImageUrl(mainImage)}
                 alt="Main Image"
               />
@@ -148,25 +106,25 @@ const Product = () => {
               <img
                 src={getImageUrl(product?.additionalImages[0])}
                 alt="Thumbnail 1"
-                className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
                 onClick={() => setMainImage(product?.additionalImages[0])}
               />
               <img
                 src={getImageUrl(product?.additionalImages[1])}
                 alt="Thumbnail 2"
-                className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
                 onClick={() => setMainImage(product?.additionalImages[1])}
               />
               <img
                 src={getImageUrl(product?.additionalImages[2])}
                 alt="Thumbnail 3"
-                className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
                 onClick={() => setMainImage(product?.additionalImages[2])}
               />
               <img
                 src={getImageUrl(product?.additionalImages[3])}
                 alt="Thumbnail 4"
-                className="cursor-pointer md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
                 onClick={() => setMainImage(product?.additionalImages[3])}
               />
             </div>
@@ -183,15 +141,22 @@ const Product = () => {
               </div>
               <p>{product?.reviews.length} Reviews</p>
             </div> */}
-            <div className="flex gap-3 text-3xl font-bold text-[#FC2FAD]">
-              <p>${product?.discountedPrice}</p>
+            <div className=" relative flex gap-3 text-primary">
+              {product?.discountedPrice ? (
+                <div>
+                  <p className="line-through text-gray-500">${product?.regularPrice}</p>
+                  <p className="absolute font-bold top-3 left-0 text-3xl ">${product?.discountedPrice}</p>
+                </div>
+              ) : (
+                <p className="absolute font-bold top-4 left-0 text-2xl ">{product?.regularPrice}</p>
+              )}
             </div>
-            <p className="leading-5">{product?.description}</p>
-            <div className="flex items-center gap-10 mt-10 md:mt-0">
+
+            <div className="flex items-center gap-10 pt-5 md:mt-0">
               <h1 className="font-bold text-2xl">Size:</h1>
               <div>
                 <div className="flex flex-wrap gap-2">
-                  {['S', 'M', 'L', 'XL', '2XL', '3XL'].map((size) => (
+                  {product?.size?.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
@@ -207,10 +172,29 @@ const Product = () => {
             </div>
             <div className="flex gap-5 mt-5 md:mt-0 items-center">
               <h1 className="font-bold text-2xl">Color:</h1>
-              <div className="w-10 border rounded-full h-10 bg-[#FC2FAD]"></div>
-              <div className="w-10 border rounded-full h-10 bg-[#5223fd]"></div>
-              <div className="w-10 border rounded-full h-10 bg-[#12912d]"></div>
-              <div className="w-10 border rounded-full h-10 bg-[#ff2525]"></div>
+              <div className="flex gap-2">
+                {product?.color?.map((color) => (
+                  <label key={color} className="cursor-pointer relative">
+                    <input
+                      type="radio"
+                      name="color"
+                      value={color}
+                      className="hidden"
+                      onChange={() => setSelectedColors(color)}
+                    />
+                    <div
+                      className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
+                        selectedColors === color ? 'border-black' : 'border-gray-300'
+                      }`}
+                      style={{ backgroundColor: color.toLowerCase() }}
+                    >
+                      {selectedColors === color && (
+                        <FaCheckCircle size={30} className={`absolute text-white bg-primary rounded-full p-1`} />
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
             <div className="flex items-center gap-4 ">
               <div className="flex border font-semibold p-2 rounded-2xl border-gray-300 items-center gap-3">
@@ -232,7 +216,7 @@ const Product = () => {
             </div>
             <div className="flex md:text-xl font-bold gap-4 mb-5 md:mb-0">
               <button
-                onClick={() => toast.success('Product added to cart successfully!')}
+                onClick={() => handleAddToCart(product)}
                 className=" text-[#FC2FAD] border border-[#FC2FAD] px-5 py-3 rounded-lg"
               >
                 Add to Cart
@@ -243,7 +227,7 @@ const Product = () => {
             </div>
             <h1 className="flex gap-2 items-center">
               <span className="font-bold">Available:</span>
-              {productData?.availability === 'available' ? (
+              {product?.availability === 'inStock' ? (
                 <span className="text-green-600 flex gap-1">
                   In Stock <FiCheckSquare />
                 </span>
@@ -252,10 +236,10 @@ const Product = () => {
               )}
             </h1>
             <h1>
-              <span className="font-bold">Tags: </span> {productData?.tags}
+              <span className="font-bold">Tags: </span> {product?.tag?.map((tag) => tag).join(', ')}
             </h1>
             <h1>
-              <span className="font-bold">Category:</span> {productData?.category}
+              <span className="font-bold">Category:</span> {product?.productCategory?.categoryName}
             </h1>
           </div>
         </div>
@@ -275,8 +259,8 @@ const Product = () => {
         <h1 className="clash md:text-4xl text-2xl border-b-4 border-[#FC2FAD] md:w-[28%] w-[70%]">
           <span className="text-[#FC2FAD]">Related</span> Products
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-4">
-          {relatedProductData?.slice(0, 4)?.map((product, i) => (
+        <div className="grid grid-cols-1 mt-10 md:grid-cols-4">
+          {product?.relatedProducts?.slice(0, 4)?.map((product, i) => (
             <ProductCard key={i} product={product} />
           ))}
         </div>

@@ -6,6 +6,7 @@ import ProductCard from '@/components/common/ProductCard';
 import debounce from 'lodash/debounce';
 import React, { useEffect, useState } from 'react';
 import { useGetAllProductsQuery, useGetCategoriesQuery } from '@/redux/apiSlices/productSlice';
+import { useGetCartQuery, useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
 
 const page = () => {
   const [checkedCategories, setCheckedCategories] = useState([]);
@@ -26,8 +27,10 @@ const page = () => {
     categoryId: checkedCategories,
     minPrice: debouncedPriceRange[0],
     maxPrice: debouncedPriceRange[1],
-    availability, // Added availability filter
+    availability,
   });
+
+  const { data: wishList, isLoading: isLoadingWishList } = useGetWishlistQuery();
 
   const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery();
 
@@ -48,12 +51,15 @@ const page = () => {
     setAvailability(e.target.value);
   };
 
-  if (isLoading || isLoadingCategories) {
+  if (isLoading || isLoadingCategories || isLoadingWishList) {
     return <p>Loading...</p>;
   }
 
   const productsData = products?.data;
   const categoriesData = categories?.data?.data;
+  const wishListData = wishList?.data;
+
+  console.log(wishListData);
 
   return (
     <div className="bg-slate-50">

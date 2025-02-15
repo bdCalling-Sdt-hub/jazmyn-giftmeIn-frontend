@@ -48,7 +48,7 @@ const CustomProvider = ({ children }: { children: React.ReactNode }) => {
       >
         <AntdRegistry>
           <Provider store={store}>
-            <NextTopLoader color="#F82BA9" />
+            <NextTopLoader color="#F82BA9" showSpinner={false} />
             {children}
             <Toaster position="top-center" />
           </Provider>

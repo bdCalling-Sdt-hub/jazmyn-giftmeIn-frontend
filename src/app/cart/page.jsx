@@ -1,90 +1,57 @@
 'use client';
 
 import { Table } from 'antd';
-import { useState } from 'react';
-import productImg1 from '../../assets/image1.jpg';
-import productImg2 from '../../assets/image2.jpg';
-import productImg3 from '../../assets/giftImage3.jpg';
-import productImg4 from '../../assets/giftImage4.jpg';
 import Link from 'next/link';
+import { useGetCartQuery, useUpdateCartQuantityMutation } from '@/redux/apiSlices/cartSlice';
+import { getImageUrl } from '@/util/getImgUrl';
 
 const Cart = () => {
-  // Cart state
-  const [cart, setCart] = useState([
-    {
-      key: '1',
-      product: {
-        image: productImg1.src,
-        name: 'Gift Package',
-      },
-      price: 100,
-      quantity: 1,
-      subtotal: 100,
-    },
-    {
-      key: '2',
-      product: {
-        image: productImg2.src,
-        name: 'Gift Package',
-      },
-      price: 150,
-      quantity: 2,
-      subtotal: 300,
-    },
-    {
-      key: '3',
-      product: {
-        image: productImg3.src,
-        name: 'Gift Package',
-      },
-      price: 200,
-      quantity: 1,
-      subtotal: 200,
-    },
-    {
-      key: '4',
-      product: {
-        image: productImg4.src,
-        name: 'Gift Package',
-      },
-      price: 250,
-      quantity: 3,
-      subtotal: 750,
-    },
-  ]);
+  const { data: cartData, isLoading } = useGetCartQuery();
+  const [updateCart] = useUpdateCartQuantityMutation();
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  const cartItems = cartData?.data || [];
 
   // Update quantity
-  const updateQuantity = (key, newQuantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.key === key
-          ? {
-              ...item,
-              quantity: newQuantity,
-              subtotal: newQuantity * item.price,
-            }
-          : item,
-      ),
-    );
+  const updateQuantity = async (record, newQuantity) => {
+    const data = {
+      quantity: newQuantity,
+      productId: record?.variations?.product[0]?._id,
+    };
+    console.log(record, newQuantity);
+    const itemToUpdate = cartItems.find((item) => item._id === record?._id);
+    if (itemToUpdate) {
+      await updateCart({ id: itemToUpdate._id, data });
+    }
   };
 
   // Remove item from cart
   const removeItem = (key) => {
-    setCart((prevCart) => prevCart.filter((item) => item.key !== key));
+    // Implement remove item logic here, possibly another mutation
   };
 
   // Calculate total price
-  const totalPrice = cart.reduce((total, item) => total + item.subtotal, 0);
+  const totalPrice = cartItems.reduce((sum, item) => {
+    const subtotal = item?.variations?.product[0]?.discountedPrice * item?.variations?.quantity;
+    return sum + (subtotal || 0);
+  }, 0);
 
   const columns = [
     {
       title: 'Product',
       dataIndex: 'product',
       key: 'product',
-      render: (product) => (
+      render: (_, record) => (
         <div className="flex items-center gap-4">
-          <img src={product.image} alt={product.name} className="w-16 h-16 object-cover" />
-          <span>{product.name}</span>
+          <img
+            src={getImageUrl(record?.variations?.product[0]?.featureImage)}
+            alt={record?.variations?.product[0]?.productName}
+            className="w-16 h-16 object-cover"
+          />
+          <span>{record?.variations?.product[0]?.productName}</span>
         </div>
       ),
     },
@@ -92,37 +59,44 @@ const Cart = () => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      render: (price) => `$${price.toFixed(2)}`,
+      render: (_, record) => <span>${record?.variations?.product[0]?.discountedPrice?.toFixed(2)}</span>,
     },
     {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
-      render: (quantity, record) => (
-        <div className="flex items-center gap-4 mt-3">
-          <div className="flex border font-semibold p-2 rounded-2xl border-gray-300 items-center gap-3">
-            <button
-              onClick={() => updateQuantity(record.key, quantity > 1 ? quantity - 1 : 1)}
-              className="border bg-gray-200 rounded-2xl px-3 py-1"
-            >
-              -
-            </button>
-            <span className="text-xl">{quantity}</span>
-            <button
-              onClick={() => updateQuantity(record.key, quantity + 1)}
-              className="border bg-gray-200 rounded-2xl px-3 py-1"
-            >
-              +
-            </button>
+      render: (quantity, record) => {
+        // console.log(record);
+        return (
+          <div className="flex items-center gap-4 mt-3">
+            <div className="flex border font-semibold p-2 rounded-2xl border-gray-300 items-center gap-3">
+              <button
+                onClick={() =>
+                  updateQuantity(record, record?.variations?.quantity > 1 ? record?.variations?.quantity - 1 : 1)
+                }
+                className="border bg-gray-200 rounded-2xl px-3 py-1"
+              >
+                -
+              </button>
+              <span className="text-xl">{record?.variations?.quantity}</span>
+              <button
+                onClick={() => updateQuantity(record, record?.variations?.quantity + 1)}
+                className="border bg-gray-200 rounded-2xl px-3 py-1"
+              >
+                +
+              </button>
+            </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: 'Subtotal',
       dataIndex: 'subtotal',
       key: 'subtotal',
-      render: (subtotal) => `$${subtotal.toFixed(2)}`,
+      render: (_, record) => (
+        <span>${(record?.variations?.product[0]?.discountedPrice * record?.variations?.quantity)?.toFixed(2)}</span>
+      ),
     },
     {
       title: 'Action',
@@ -141,14 +115,15 @@ const Cart = () => {
         <div className="md:w-[70%]">
           <Table
             className="border-t-8 border-t-[#F82BA9] rounded-2xl"
-            dataSource={cart}
+            dataSource={cartItems}
             columns={columns}
             pagination={false}
             scroll={{ x: 700 }}
+            rowKey="_id"
           />
         </div>
         <div className="md:w-[30%] border-t-8 mt-10 md:mt-0 border-t-[#F82BA9] bg-white rounded-2xl">
-          <div className=" p-6 ">
+          <div className="p-6">
             <h1 className="text-2xl font-bold mb-4 border-b-2 pb-3">Cart Total</h1>
 
             <div className="flex justify-between border-b-2 pb-3 text-lg mb-2">
@@ -159,7 +134,7 @@ const Cart = () => {
               <span>Shipping:</span>
               <span className="font-semibold">Free</span>
             </div>
-            <div className="flex justify-between  pb-3 text-lg mb-2">
+            <div className="flex justify-between pb-3 text-lg mb-2">
               <span>Total:</span>
               <span className="font-semibold">${totalPrice.toFixed(2)}</span>
             </div>

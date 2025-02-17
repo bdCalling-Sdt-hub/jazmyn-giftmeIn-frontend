@@ -1,7 +1,8 @@
 'use client';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import { useGetCartQuery } from '@/redux/apiSlices/cartSlice';
 import { getImageUrl } from '@/util/getImgUrl';
-import { Button } from 'antd';
+import { Badge, Button } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,6 +44,7 @@ const Navbar = () => {
   const [token, setToken] = useState('');
 
   const { data: profileData, isLoading } = useGetUserProfileQuery();
+  const { data: cartItems, isLoading: cartLoading } = useGetCartQuery();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -54,7 +56,8 @@ const Navbar = () => {
   }
 
   const profile = profileData?.data;
-  // console.log(profile);
+  const cart = cartItems?.data?.data;
+  console.log(cart);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -95,7 +98,9 @@ const Navbar = () => {
               <Icon src="/logo/favorite.png" alt="favorite product" width={26} height={26} />
               <Icon src="/logo/notification.png" alt="notification items icons" width={24} height={24} />
               <Link href={'/cart'}>
-                <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
+                <Badge count={cart?.length} offset={[-5, 8]}>
+                  <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
+                </Badge>
               </Link>
               <Link href={'/dashboard/profile'} className="flex items-center cursor-pointer space-x-2">
                 <img
@@ -152,7 +157,9 @@ const Navbar = () => {
                 height={24}
               />
               <Link onClick={closeMobileMenu} href={'/cart'}>
-                <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
+                <Badge count={cart?.length}>
+                  <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
+                </Badge>
               </Link>
               <Link
                 onClick={closeMobileMenu}

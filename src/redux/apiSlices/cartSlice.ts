@@ -8,6 +8,7 @@ const cartApi = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['cart'],
     }),
 
     getCart: builder.query({
@@ -27,6 +28,14 @@ const cartApi = api.injectEndpoints({
       invalidatesTags: ['cart'],
     }),
 
+    deleteFromCart: builder.mutation({
+      query: (id) => ({
+        url: `/cart/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['cart'],
+    }),
+
     //wishlist
     getWishlist: builder.query({
       query: () => ({
@@ -38,4 +47,10 @@ const cartApi = api.injectEndpoints({
   }),
 });
 
-export const { useAddToCartMutation, useGetCartQuery, useUpdateCartQuantityMutation, useGetWishlistQuery } = cartApi;
+export const {
+  useAddToCartMutation,
+  useGetCartQuery,
+  useUpdateCartQuantityMutation,
+  useGetWishlistQuery,
+  useDeleteFromCartMutation,
+} = cartApi;

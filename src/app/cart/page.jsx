@@ -2,24 +2,26 @@
 
 import { Table } from 'antd';
 import Link from 'next/link';
-import { useGetCartQuery, useUpdateCartQuantityMutation } from '@/redux/apiSlices/cartSlice';
+import { useDeleteFromCartMutation, useGetCartQuery, useUpdateCartQuantityMutation } from '@/redux/apiSlices/cartSlice';
 import { getImageUrl } from '@/util/getImgUrl';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
-  const { data: cartData, isLoading } = useGetCartQuery();
+  const { data: cartData, isLoading, refetch } = useGetCartQuery();
   const [updateCart] = useUpdateCartQuantityMutation();
+  const [deleteFromCart] = useDeleteFromCartMutation();
 
   if (isLoading) {
     return <h2>Loading...</h2>;
   }
 
-  const cartItems = cartData?.data || [];
+  const cartItems = cartData?.data?.data || [];
 
   // Update quantity
   const updateQuantity = async (record, newQuantity) => {
     const data = {
       quantity: newQuantity,
-      productId: record?.variations?.product[0]?._id,
+      cartItemId: record?._id,
     };
     console.log(record, newQuantity);
     const itemToUpdate = cartItems.find((item) => item._id === record?._id);
@@ -29,12 +31,21 @@ const Cart = () => {
   };
 
   // Remove item from cart
-  const removeItem = (key) => {
-    // Implement remove item logic here, possibly another mutation
+  const handleRemoveItem = async (id) => {
+    try {
+      const response = await deleteFromCart(id).unwrap();
+      if (response.success) {
+        toast.success('Item removed successfully');
+        refetch();
+      }
+    } catch (error) {
+      console.error('Failed to remove item:', error);
+      toast.error('Failed to remove item');
+    }
   };
 
   // Calculate total price
-  const totalPrice = cartItems.reduce((sum, item) => {
+  const totalPrice = cartItems?.reduce((sum, item) => {
     const subtotal = item?.variations?.product[0]?.discountedPrice * item?.variations?.quantity;
     return sum + (subtotal || 0);
   }, 0);
@@ -102,7 +113,7 @@ const Cart = () => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <button className="text-red-500 hover:underline" onClick={() => removeItem(record.key)}>
+        <button onClick={() => handleRemoveItem(record._id)} className="text-red-500 hover:underline">
           X
         </button>
       ),
@@ -139,11 +150,20 @@ const Cart = () => {
               <span className="font-semibold">${totalPrice.toFixed(2)}</span>
             </div>
 
-            <Link href={'/checkout'}>
-              <button className="w-full mt-4 bg-[#F82BA9] text-white py-3 rounded-2xl hover:bg-[#b0397f] hover:text-black">
+            {cartItems.length === 0 ? (
+              <button
+                className="w-full mt-4 bg-[#F82BA9] text-white py-3 rounded-2xl hover:bg-[#b0397f] hover:text-black"
+                onClick={() => toast.error('No items in cart')}
+              >
                 Proceed to Checkout
               </button>
-            </Link>
+            ) : (
+              <Link href={'/checkout'}>
+                <button className="w-full mt-4 bg-[#F82BA9] text-white py-3 rounded-2xl hover:bg-[#b0397f] hover:text-black">
+                  Proceed to Checkout
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

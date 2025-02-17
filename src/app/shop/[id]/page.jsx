@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useGetSingleProductQuery } from '@/redux/apiSlices/productSlice';
 import { getImageUrl } from '@/util/getImgUrl';
-import { useAddToCartMutation } from '@/redux/apiSlices/cartSlice';
+import { useAddToCartMutation, useGetCartQuery } from '@/redux/apiSlices/cartSlice';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 
 const Product = () => {
@@ -28,6 +28,7 @@ const Product = () => {
   const { data: productData, isLoading } = useGetSingleProductQuery(id);
   const [addToCart] = useAddToCartMutation();
   const { data: userProfile, isLoading: userProfileLoading } = useGetUserProfileQuery();
+  const { data: cartItems, isLoading: cartLoading } = useGetCartQuery();
 
   useEffect(() => {
     if (productData) {
@@ -35,13 +36,14 @@ const Product = () => {
     }
   }, [productData]);
 
-  if (isLoading || userProfileLoading) {
+  if (isLoading || userProfileLoading || cartLoading) {
     return <h2>Loading...</h2>;
   }
 
   const product = productData?.data;
   const userId = userProfile?.data?._id;
-  // console.log(userId);
+  const cartData = cartItems?.data;
+  console.log(product);
 
   // Function to calculate total price
   const totalPrice = product?.discountedPrice * quantity;
@@ -74,7 +76,15 @@ const Product = () => {
       },
     };
 
-    console.log('cart data', data);
+    // console.log('cart data', data);
+    if (!selectedSize) {
+      toast.error('Please select a size');
+      return;
+    }
+    if (!selectedColors) {
+      toast.error('Please select a color');
+      return;
+    }
 
     try {
       const res = await addToCart(data).unwrap();
@@ -221,9 +231,11 @@ const Product = () => {
               >
                 Add to Cart
               </button>
-              <Link href="/checkout">
-                <button className="bg-primary text-white px-5 py-3 rounded-lg">Buy Now</button>
-              </Link>
+              {cartData?.length > 0 && (
+                <Link href="/checkout">
+                  <button className="bg-primary text-white px-5 py-3 rounded-lg">Buy Now</button>
+                </Link>
+              )}
             </div>
             <h1 className="flex gap-2 items-center">
               <span className="font-bold">Available:</span>
@@ -259,11 +271,15 @@ const Product = () => {
         <h1 className="clash md:text-4xl text-2xl border-b-4 border-[#FC2FAD] md:w-[28%] w-[70%]">
           <span className="text-[#FC2FAD]">Related</span> Products
         </h1>
-        <div className="grid grid-cols-1 mt-10 md:grid-cols-4">
-          {product?.relatedProducts?.slice(0, 4)?.map((product, i) => (
-            <ProductCard key={i} product={product} />
-          ))}
-        </div>
+        {product?.relatedProducts?.length === 0 ? (
+          <p className="text-center mt-10">No related products found.</p>
+        ) : (
+          <div className="grid grid-cols-1 mt-10 md:grid-cols-4">
+            {product?.relatedProducts?.slice(0, 4)?.map((product, i) => (
+              <ProductCard key={i} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

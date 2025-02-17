@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, Modal, Upload } from 'antd';
 import Image from 'next/image';
 import { Edit2, User, Calendar, Gift, ShoppingBag, Heart, Crown, Settings, LogOut, CameraIcon } from 'lucide-react';
@@ -7,9 +7,25 @@ import { UploadChangeParam } from 'antd/es/upload';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { FaExclamation } from 'react-icons/fa';
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import { getImageUrl } from '@/util/getImgUrl';
 
 const DashboardSidebar = () => {
-  const [previewImage, setPreviewImage] = useState<undefined | string>('https://i.ibb.co.com/yN2vT01/me.jpg');
+  const [previewImage, setPreviewImage] = useState('');
+  const { data: profileData, isLoading } = useGetUserProfileQuery(undefined);
+
+  useEffect(() => {
+    if (profileData?.data) {
+      setPreviewImage(profileData?.data?.image);
+    }
+  }, [profileData]);
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  const profile = profileData?.data;
+  console.log(profile);
 
   const handleFileChange = ({ file }: UploadChangeParam<any>) => {
     const reader = new FileReader();
@@ -93,7 +109,7 @@ const DashboardSidebar = () => {
           <Image
             width={500}
             height={500}
-            src={previewImage || 'https://i.ibb.co.com/yN2vT01/me.jpg'}
+            src={getImageUrl(previewImage) || 'https://i.ibb.co.com/yN2vT01/me.jpg'}
             alt="Profile"
             className="w-full h-full  object-cover rounded-full"
           />
@@ -105,9 +121,9 @@ const DashboardSidebar = () => {
             </Upload>
           </div>
         </div>
-        <div className="mt-2">
-          <h3 className="text-lg font-bold mb-1">Jazmyne Doe</h3>
-          <p className="text-sm text-gray-600">demo@example.com</p>
+        <div className="mt-2 text-center">
+          <h3 className="text-lg font-bold mb-1">{profile?.name}</h3>
+          <p className="text-sm text-gray-600">{profile?.email}</p>
         </div>
       </div>
 

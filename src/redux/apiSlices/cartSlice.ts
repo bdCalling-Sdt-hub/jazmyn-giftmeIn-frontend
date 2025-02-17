@@ -36,6 +36,17 @@ const cartApi = api.injectEndpoints({
       invalidatesTags: ['cart'],
     }),
 
+    //checkout
+
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: '/package/checkout',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['order'],
+    }),
+
     //wishlist
     getWishlist: builder.query({
       query: () => ({
@@ -51,6 +62,7 @@ export const {
   useAddToCartMutation,
   useGetCartQuery,
   useUpdateCartQuantityMutation,
+  useCreateOrderMutation,
   useGetWishlistQuery,
   useDeleteFromCartMutation,
 } = cartApi;

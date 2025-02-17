@@ -2,10 +2,6 @@
 
 import { FaCheckCircle, FaStar } from 'react-icons/fa';
 import ProductCard from '../../../components/common/ProductCard';
-import productImg1 from '../../../assets/image1.jpg';
-import productImg2 from '../../../assets/image2.jpg';
-import productImg3 from '../../../assets/giftImage3.jpg';
-import productImg4 from '../../../assets/giftImage4.jpg';
 import { useEffect, useState } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 import { ConfigProvider, Tabs } from 'antd';
@@ -43,7 +39,7 @@ const Product = () => {
   const product = productData?.data;
   const userId = userProfile?.data?._id;
   const cartData = cartItems?.data;
-  console.log(product);
+  console.log(cartData);
 
   // Function to calculate total price
   const totalPrice = product?.discountedPrice * quantity;
@@ -231,7 +227,7 @@ const Product = () => {
               >
                 Add to Cart
               </button>
-              {cartData?.length > 0 && (
+              {cartData?.totalItems > 0 && (
                 <Link href="/checkout">
                   <button className="bg-primary text-white px-5 py-3 rounded-lg">Buy Now</button>
                 </Link>

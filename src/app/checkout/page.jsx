@@ -8,19 +8,15 @@ import { Button, Checkbox, Form, Input, Modal, Select } from 'antd';
 import { useState } from 'react';
 import Link from 'next/link';
 import { FaCheckCircle } from 'react-icons/fa';
-import { useGetCartQuery } from '@/redux/apiSlices/cartSlice';
+import { useCreateOrderMutation, useGetCartQuery } from '@/redux/apiSlices/cartSlice';
 import { getImageUrl } from '@/util/getImgUrl';
+import toast from 'react-hot-toast';
 const { Option } = Select;
-
-const products = [
-  { id: 1, title: 'Product 1', price: 29.99, quantity: 1, image: Image1 },
-  { id: 2, title: 'Product 2', price: 49.99, quantity: 1, image: Image2 },
-  { id: 3, title: 'Product 3', price: 19.99, quantity: 1, image: Image3 },
-];
 
 const CheckoutPage = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [createOrder] = useCreateOrderMutation();
 
   const { data: cartItems, isLoading } = useGetCartQuery();
 
@@ -29,9 +25,30 @@ const CheckoutPage = () => {
   const { totalPrice } = cartItems?.data;
   console.log(cartData);
 
-  const onFinish = (values) => {
-    console.log('Form Values:', values);
-    setIsModalVisible(true);
+  const onFinish = async (values) => {
+    const data = {
+      products: [
+        ...cartData?.map((item) => ({
+          id: item?._id,
+          quantity: item?.variations?.quantity,
+          size: item?.variations?.size,
+          color: item?.variations?.color,
+          price: item?.variations?.quantity * item?.variations?.product[0]?.discountedPrice,
+        })),
+      ],
+      ...values,
+    };
+
+    try {
+      const res = await createOrder(data).unwrap();
+      console.log(res);
+      if (res.data?.paymentUrl) {
+        window.location.href = res.data?.paymentUrl;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
   };
 
   const handleOk = () => {
@@ -49,12 +66,12 @@ const CheckoutPage = () => {
           {/* Billing Address */}
           <div className="w-full md:w-[60%] bg-white p-5 shadow-md rounded-lg">
             <h2 className="text-2xl font-semibold mb-4">Billing Address</h2>
-            <Form.Item label="Full Name" name="fullName" rules={[{ required: true, message: 'Full name is required' }]}>
+            <Form.Item label="Full Name" name="userName" rules={[{ required: true, message: 'Full name is required' }]}>
               <Input placeholder="Enter your full name" />
             </Form.Item>
             <Form.Item
               label="Email"
-              name="email"
+              name="userEmail"
               rules={[{ required: true, type: 'email', message: 'Enter a valid email' }]}
             >
               <Input placeholder="Enter your email" />
@@ -91,7 +108,7 @@ const CheckoutPage = () => {
             <Form.Item label="Post Code" name="postCode">
               <Input placeholder="Enter your post code" />
             </Form.Item>
-            <Form.Item label="Your Message for Order" name="message">
+            <Form.Item label="Your Message for Order" name="orderMessage">
               <Input.TextArea rows={4} placeholder="Enter any special instructions" />
             </Form.Item>
           </div>

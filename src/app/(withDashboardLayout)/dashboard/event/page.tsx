@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import EventCalendar from './EventCalendar';
 import Modal from '@/components/Reusable/Modal';
 import AddEvent from './AddEvent';
+import { useGetEventsQuery } from '@/redux/apiSlices/eventSlice';
+import moment from 'moment';
 
 const events = [
   {
@@ -47,6 +49,13 @@ const events = [
 const EventPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { data: eventsList, isLoading } = useGetEventsQuery(undefined);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const eventsData = eventsList?.data;
+  console.log(eventsData);
+
   return (
     <div className="md:flex  gap-5  justify-between min-h-screen">
       <div className="rounded-lg shadow-lg border-[1px] border-[#dfdddd63] w-full p-6">
@@ -69,15 +78,17 @@ const EventPage = () => {
         <div>
           <h3 className="text-xl font-bold text-[#160E4B] mb-4">Upcoming Events</h3>
           <div className="space-y-4">
-            {events.map((event, index) => (
+            {eventsData.map((event: any, index: number) => (
               <div key={index} className="bg-white p-4 rounded-lg drop-shadow flex items-center gap-3">
                 <div className="bg-[#FFF1F8] w-[70px] h-[70px] rounded-lg flex flex-col items-center justify-center">
-                  <div className="text-primary text-3xl font-bold">{event.date}</div>
-                  <div className="text-primary text-sm">{event.month}</div>
+                  <div className="text-primary text-3xl font-bold">{moment(event.eventDate).format('D')}</div>
+                  <div className="text-primary text-sm">{moment(event.eventDate).format('MMM')}</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-[#160E4B]">{event.title}</div>
-                  <div className="text-sm text-[#9A9F9E]">In {event.daysLeft}</div>
+                  <div className="text-lg font-bold text-[#160E4B]">{event.eventName}</div>
+                  <div className="text-sm text-[#9A9F9E]">
+                    In {event.eventDate ? Math.ceil(moment(event.eventDate).diff(moment(), 'days', true)) : 0} Days
+                  </div>
                 </div>
               </div>
             ))}
@@ -91,7 +102,7 @@ const EventPage = () => {
         </Button>
 
         <div>
-          <EventCalendar />
+          <EventCalendar eventDates={eventsData?.map((event: any) => event.eventDate)} />
         </div>
       </div>
 

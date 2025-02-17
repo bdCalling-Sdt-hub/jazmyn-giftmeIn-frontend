@@ -6,7 +6,10 @@ import ProductCard from '@/components/common/ProductCard';
 import debounce from 'lodash/debounce';
 import React, { useEffect, useState } from 'react';
 import { useGetAllProductsQuery, useGetCategoriesQuery } from '@/redux/apiSlices/productSlice';
-import { useGetCartQuery, useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
+import { useCreateWishListMutation, useGetCartQuery, useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
+import { FaHeart } from 'react-icons/fa'; // Import heart icon
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import toast from 'react-hot-toast';
 
 const page = () => {
   const [checkedCategories, setCheckedCategories] = useState([]);
@@ -31,8 +34,10 @@ const page = () => {
   });
 
   const { data: wishList, isLoading: isLoadingWishList } = useGetWishlistQuery();
-
   const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery();
+  const { data: userProfile, isLoading: isLoadingUser } = useGetUserProfileQuery();
+
+  const [createWishList] = useCreateWishListMutation();
 
   const handlePriceChange = (value) => {
     setPriceRange(value);
@@ -58,8 +63,21 @@ const page = () => {
   const productsData = products?.data;
   const categoriesData = categories?.data?.data;
   const wishListData = wishList?.data;
+  const userId = userProfile?.data?._id;
 
-  console.log(wishListData);
+  // Extract wishlist product IDs
+  const wishlistedProductIds = wishListData?.map((item) => item.event) || [];
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      const res = await createWishList({ event: productId, user: userId }).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      console.error('Failed to add to wishlist: ', error);
+    }
+  };
 
   return (
     <div className="bg-slate-50">
@@ -157,7 +175,22 @@ const page = () => {
             ) : productsData && productsData.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-10 grid-cols-1">
                 {productsData.map((product) => (
-                  <ProductCard product={product} key={product._id} />
+                  <div key={product._id} className="relative">
+                    <ProductCard product={product} />
+                    {wishlistedProductIds.includes(product._id) ? (
+                      <FaHeart
+                        onClick={() => handleAddToWishlist(product._id)}
+                        className="absolute top-4 -right-3 text-red-500 cursor-pointer"
+                        size={24}
+                      />
+                    ) : (
+                      <FaHeart
+                        onClick={() => handleAddToWishlist(product._id)}
+                        className="absolute cursor-pointer top-4 -right-3 text-black"
+                        size={24}
+                      />
+                    )}
+                  </div>
                 ))}
               </div>
             ) : (

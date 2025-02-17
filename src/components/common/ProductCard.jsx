@@ -37,7 +37,6 @@ const ProductCard = ({ product }) => {
           </Link>
         </div>
       </div>
-      <FaHeart size={24} className="absolute top-4 right-4" />
     </div>
   );
 };

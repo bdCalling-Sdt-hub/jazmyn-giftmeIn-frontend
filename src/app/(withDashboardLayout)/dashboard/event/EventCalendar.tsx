@@ -16,8 +16,12 @@ const events = [
   { date: '2025-01-30', title: "Emma's Birthday", daysLeft: '2 Days' },
 ];
 
-const EventCalendar: React.FC<EventCalendarProps> = () => {
+const EventCalendar: React.FC<EventCalendarProps> = ({ eventData }: any) => {
   const [currentMonth, setCurrentMonth] = React.useState(dayjs());
+
+  const eventsDates = eventData.map((event: any) => event.eventDate);
+
+  console.log('ssdfgvsdvsddgv', eventsDates);
 
   const onSelect = (date: Dayjs) => {
     setCurrentMonth(date);

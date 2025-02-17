@@ -55,6 +55,14 @@ const cartApi = api.injectEndpoints({
       }),
       providesTags: ['wishlist'],
     }),
+    createWishList: builder.mutation({
+      query: (data) => ({
+        url: '/wishlist/create',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['wishlist'],
+    }),
   }),
 });
 
@@ -65,4 +73,5 @@ export const {
   useCreateOrderMutation,
   useGetWishlistQuery,
   useDeleteFromCartMutation,
+  useCreateWishListMutation,
 } = cartApi;

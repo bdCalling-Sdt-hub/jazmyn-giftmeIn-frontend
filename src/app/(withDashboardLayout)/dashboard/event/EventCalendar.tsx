@@ -5,23 +5,18 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface EventCalendarProps {
-  selectedDate?: Dayjs;
-  onSelect?: (date: Dayjs) => void;
-  eventDates?: string[];
+interface Event {
+  _id: string;
+  eventName: string;
+  eventDate: string;
 }
 
-const events = [
-  { date: '2025-01-03', title: "Emma's Birthday", daysLeft: '2 Days' },
-  { date: '2025-01-30', title: "Emma's Birthday", daysLeft: '2 Days' },
-];
+interface EventCalendarProps {
+  events: Event[];
+}
 
-const EventCalendar: React.FC<EventCalendarProps> = ({ eventData }: any) => {
+const EventCalendar: React.FC<EventCalendarProps> = ({ events }) => {
   const [currentMonth, setCurrentMonth] = React.useState(dayjs());
-
-  const eventsDates = eventData.map((event: any) => event.eventDate);
-
-  console.log('ssdfgvsdvsddgv', eventsDates);
 
   const onSelect = (date: Dayjs) => {
     setCurrentMonth(date);
@@ -55,19 +50,24 @@ const EventCalendar: React.FC<EventCalendarProps> = ({ eventData }: any) => {
   };
 
   const dateCellRender = (date: Dayjs) => {
-    const hasEvent = events.some((event) => event.date === date.format('YYYY-MM-DD'));
+    const formattedDate = date.format('YYYY-MM-DD');
+    const event = events.find((e) => dayjs(e.eventDate).format('YYYY-MM-DD') === formattedDate);
 
     return (
       <div
         className={`relative flex items-center justify-center p-2 rounded-md ${
-          hasEvent ? 'bg-pink-500 text-white' : 'hover:bg-gray-200'
+          event ? 'bg-pink-500 text-white' : 'hover:bg-gray-200'
         }`}
       >
         {date.date()}
-        {hasEvent && <div className="absolute top-0 right-0 size-2 bg-yellow-400 rounded-full" />}
+        {event && <div className="absolute top-0 right-0 size-2 bg-yellow-400 rounded-full" />}
       </div>
     );
   };
+
+  const nextEvent = events
+    .filter((e) => dayjs(e.eventDate).isAfter(dayjs()))
+    .sort((a, b) => dayjs(a.eventDate).diff(dayjs(b.eventDate)))[0];
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg border border-[#dfdddd63]">
@@ -79,9 +79,11 @@ const EventCalendar: React.FC<EventCalendarProps> = ({ eventData }: any) => {
         fullscreen={false}
         className="custom-calendar"
       />
-      <Button type="primary" className="w-full mt-4 h-[50px] text-lg bg-pink-500">
-        Emma's Birthday
-      </Button>
+      {nextEvent && (
+        <Button type="primary" className="w-full mt-4 h-[50px] text-lg bg-pink-500">
+          {nextEvent.eventName} on {dayjs(nextEvent.eventDate).format('DD MMM YYYY')}
+        </Button>
+      )}
     </div>
   );
 };

@@ -95,7 +95,9 @@ const Navbar = () => {
         <div className="hidden md:flex ">
           {token ? (
             <div className="flex items-center cursor-pointer space-x-2">
-              <Icon src="/logo/favorite.png" alt="favorite product" width={26} height={26} />
+              <Link href={'/dashboard/wishlist'}>
+                <Icon src="/logo/favorite.png" alt="favorite product" width={26} height={26} />
+              </Link>
               <Icon src="/logo/notification.png" alt="notification items icons" width={24} height={24} />
               <Link href={'/cart'}>
                 <Badge count={cart?.length} offset={[-5, 8]}>
@@ -148,7 +150,15 @@ const Navbar = () => {
               />
             ))}
             <div className="flex items-center space-x-4">
-              <Icon onClick={closeMobileMenu} src="/logo/favorite.png" alt="favorite product" width={26} height={26} />
+              <Link href={'/dashboard/wishlist'}>
+                <Icon
+                  onClick={closeMobileMenu}
+                  src="/logo/favorite.png"
+                  alt="favorite product"
+                  width={26}
+                  height={26}
+                />
+              </Link>
               <Icon
                 onClick={closeMobileMenu}
                 src="/logo/notification.png"

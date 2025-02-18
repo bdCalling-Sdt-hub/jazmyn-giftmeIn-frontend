@@ -66,13 +66,13 @@ const page = () => {
   const userId = userProfile?.data?._id;
 
   // Extract wishlist product IDs
-  const wishlistedProductIds = wishListData?.map((item) => item.event) || [];
+  const wishlistedProductIds = wishListData?.map((item) => item.event?._id) || [];
 
   const handleAddToWishlist = async (productId) => {
     try {
       const res = await createWishList({ event: productId, user: userId }).unwrap();
       if (res.success) {
-        toast.success(res.message);
+        toast.success(res?.data?.message);
       }
     } catch (error) {
       console.error('Failed to add to wishlist: ', error);

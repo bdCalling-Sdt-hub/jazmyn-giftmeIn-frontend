@@ -39,7 +39,7 @@ const Product = () => {
   const product = productData?.data;
   const userId = userProfile?.data?._id;
   const cartData = cartItems?.data;
-  console.log(cartData);
+  // console.log(cartData);
 
   // Function to calculate total price
   const totalPrice = product?.discountedPrice * quantity;
@@ -70,6 +70,18 @@ const Product = () => {
         quantity: quantity,
         product: product?._id,
       },
+    };
+
+    const handleAddToCart = async (product) => {
+      const data = {
+        user: userId,
+        variations: {
+          size: selectedSize,
+          color: selectedColors,
+          quantity: quantity,
+          product: product?._id,
+        },
+      };
     };
 
     // console.log('cart data', data);

@@ -4,6 +4,12 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { MonthlyData, YearlyData } from '../../util/planData';
 import { Inter } from 'next/font/google';
+import Link from 'next/link';
+import { Modal } from 'antd';
+import { features } from 'process';
+import { useCreateSubscriptionMutation } from '@/redux/apiSlices/cartSlice';
+import toast from 'react-hot-toast';
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -11,6 +17,53 @@ const inter = Inter({
 
 const Subscription = ({ route }) => {
   const [isMonthly, setIsMonthly] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createSubscription] = useCreateSubscriptionMutation();
+  const { data: userProfile, isLoading } = useGetUserProfileQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const email = userProfile?.data?.email;
+  console.log(email);
+
+  const handleChoosePlan = (plan) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubscribe = async (plan) => {
+    console.log('selectedPlan', selectedPlan);
+
+    const data = {
+      name: selectedPlan.type,
+      description: selectedPlan.desc,
+      price: selectedPlan.price,
+      duration: selectedPlan.duration,
+      trialEndsAt: new Date().toISOString(),
+      features: selectedPlan.features,
+      category: selectedPlan.type,
+      paymentType: selectedPlan.id === 1 ? 'Free' : 'Paid',
+    };
+
+    try {
+      const response = await createSubscription(data);
+      console.log(response);
+      if (response?.data?.success) {
+        handleCloseModal();
+        window.location.href = `${response?.data?.data?.paymentLink}?prefilled_email=${email}`;
+      }
+    } catch (error) {
+      console.error('Subscription failed:', error);
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
 
   return (
     <section className="flex justify-center items-center min-h-screen py-10">
@@ -99,7 +152,11 @@ const Subscription = ({ route }) => {
                       <p className="text-xs text-[#65728E] font-normal">{feature}</p>
                     </div>
                   ))}
-                  <button className="bg-[#FEEDF7] rounded-[8px] border border-[#F82BA9B2] text-primary px-[12px] py-[9px]">
+
+                  <button
+                    onClick={() => handleChoosePlan(data)}
+                    className="bg-[#FEEDF7] rounded-[8px] border border-[#F82BA9B2] text-primary px-[12px] py-[9px]"
+                  >
                     Choose Plan
                   </button>
                 </div>
@@ -107,6 +164,41 @@ const Subscription = ({ route }) => {
             ))}
         </section>
       </div>
+      {/* Ant Design Modal Component */}
+      <Modal
+        title={selectedPlan ? selectedPlan.type : ''}
+        open={isModalOpen}
+        onOk={handleSubscribe}
+        onCancel={handleCloseModal}
+        okText="Subscribe Now"
+        cancelText="Cancel"
+      >
+        {selectedPlan && (
+          <div className="p-4">
+            <p className="text-gray-700">{selectedPlan.desc}</p>
+            <p className="font-semibold text-lg mt-2">
+              Price: <span className="text-primary">${selectedPlan.price}</span> / {selectedPlan.duration}
+            </p>
+            <h4 className="font-semibold text-lg mt-4">Features:</h4>
+            <ul className="list-disc pl-5 mt-2">
+              {selectedPlan.features.map((feature, index) => (
+                <li key={index} className="text-gray-700">
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            {selectedPlan.recoment && <p className="text-red-500 font-bold mt-2">Recommended Plan!</p>}
+            {/* <div className="mt-4">
+              <button
+                onClick={() => handleSubscribe(selectedPlan)}
+                className="bg-green-500 text-white rounded px-4 py-2"
+              >
+                Subscribe Now
+              </button>
+            </div> */}
+          </div>
+        )}
+      </Modal>
     </section>
   );
 };

@@ -1,8 +1,11 @@
 'use client';
 
-import { useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import { useCreateWishListMutation, useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
+import { getImageUrl } from '@/util/getImgUrl';
 import { Input } from 'antd';
 import { Heart, SearchIcon, ShoppingCart } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface WishlistItem {
   id: string;
@@ -11,51 +14,27 @@ interface WishlistItem {
   image: string;
 }
 
-const wishlistData: WishlistItem[] = [
-  {
-    id: '1',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-  {
-    id: '2',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-  {
-    id: '3',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-  {
-    id: '4',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-  {
-    id: '5',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-  {
-    id: '6',
-    title: 'Special Gift Box',
-    price: 50.0,
-    image: '/images/product.jpg',
-  },
-];
-
 const WishlistPage = () => {
   const { data: wishListList, isLoading } = useGetWishlistQuery(undefined);
+  const [createWishList] = useCreateWishListMutation();
+  const { data: userProfile, isLoading: isLoadingUser } = useGetUserProfileQuery(undefined);
 
-  if (isLoading) return <div>Loading...</div>;
-  const wishlist = wishListList?.data;
-  console.log(wishlist);
+  if (isLoading || isLoadingUser) return <div>Loading...</div>;
+
+  const wishlist = wishListList?.data || [];
+  const userId = userProfile?.data?._id;
+  // console.log(wishlist);
+
+  const handleAddToWishlist = async (id: string) => {
+    try {
+      const res = await createWishList({ event: id, user: userId }).unwrap();
+      if (res.success) {
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.error('Failed to add to wishlist: ', error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -76,8 +55,15 @@ const WishlistPage = () => {
             <div className="relative">
               {/* Image Container */}
               <div className="relative aspect-square">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                <button className="absolute top-3 right-3 text-primary hover:scale-110 transition">
+                <img
+                  src={getImageUrl(item?.event?.featureImage)}
+                  alt={item?.event?.productName}
+                  className="w-full h-full p-2 rounded-md object-cover"
+                />
+                <button
+                  onClick={() => handleAddToWishlist(item?.event?._id)}
+                  className="absolute top-3 right-3 text-primary hover:scale-110 transition"
+                >
                   <Heart className="w-6 h-6 fill-primary" />
                 </button>
               </div>
@@ -85,8 +71,8 @@ const WishlistPage = () => {
 
             {/* Content */}
             <div className="p-4 space-y-2">
-              <h3 className="font-semibold text-lg text-center">{item.title}</h3>
-              <p className="text-primary text-xl font-bold text-center">${item.price}</p>
+              <h3 className="font-semibold text-lg text-center">{item?.event?.productName}</h3>
+              <p className="text-primary text-xl font-bold text-center">${item?.event?.discountedPrice}</p>
               <button className="w-full bg-primary text-white py-2 rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2">
                 <ShoppingCart className="w-5 h-5" />
                 Add To Cart

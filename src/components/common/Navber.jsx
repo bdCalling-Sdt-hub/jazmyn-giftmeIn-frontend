@@ -57,7 +57,7 @@ const Navbar = () => {
 
   const profile = profileData?.data;
   const cart = cartItems?.data?.data;
-  console.log(cart);
+  // console.log(cart);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);

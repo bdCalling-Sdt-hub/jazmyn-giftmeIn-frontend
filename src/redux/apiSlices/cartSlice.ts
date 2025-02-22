@@ -63,6 +63,16 @@ const cartApi = api.injectEndpoints({
       }),
       invalidatesTags: ['wishlist'],
     }),
+
+    //subscription
+    createSubscription: builder.mutation({
+      query: (data) => ({
+        url: '/package/create',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['order'],
+    }),
   }),
 });
 
@@ -74,4 +84,5 @@ export const {
   useGetWishlistQuery,
   useDeleteFromCartMutation,
   useCreateWishListMutation,
+  useCreateSubscriptionMutation,
 } = cartApi;

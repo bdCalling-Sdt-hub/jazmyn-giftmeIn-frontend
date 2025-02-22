@@ -12,7 +12,7 @@ export const MonthlyData = [
     ],
   },
   {
-    id: 2,
+    id: 301,
     type: 'Budget Friendly',
     price: 15,
     duration: 'month',
@@ -26,7 +26,7 @@ export const MonthlyData = [
     ],
   },
   {
-    id: 3,
+    id: 302,
     type: 'Premium Plan',
     price: 30,
     duration: 'month',
@@ -43,7 +43,7 @@ export const MonthlyData = [
     ],
   },
   {
-    id: 4,
+    id: 303,
     type: 'Spoiling Myself',
     price: 50,
     duration: 'month',
@@ -75,7 +75,7 @@ export const YearlyData = [
     ],
   },
   {
-    id: 2,
+    id: 121,
     type: 'Budget Friendly',
     price: 171,
     duration: 'year',
@@ -89,7 +89,7 @@ export const YearlyData = [
     ],
   },
   {
-    id: 3,
+    id: 122,
     type: 'Premium Plan',
     price: 342,
     duration: 'year',
@@ -106,7 +106,7 @@ export const YearlyData = [
     ],
   },
   {
-    id: 4,
+    id: 123,
     type: 'Spoiling Myself',
     price: 570,
     duration: 'year',

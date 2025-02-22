@@ -25,7 +25,7 @@ const DashboardSidebar = () => {
   }
 
   const profile = profileData?.data;
-  console.log(profile);
+  // console.log(profile);
 
   const handleFileChange = ({ file }: UploadChangeParam<any>) => {
     const reader = new FileReader();

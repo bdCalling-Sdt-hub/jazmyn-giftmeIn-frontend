@@ -16,7 +16,7 @@ const EventPage = () => {
   if (isLoading) return <div>Loading...</div>;
 
   const eventsData = eventsList?.data;
-  console.log('aaaaaaaadddddddddddd', eventsData);
+  // console.log('aaaaaaaadddddddddddd', eventsData);
 
   const upcomingEvents = eventsData
     ?.filter((event: any) => moment(event.eventDate).isAfter(moment())) // Only future events

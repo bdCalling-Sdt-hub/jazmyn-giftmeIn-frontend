@@ -23,7 +23,7 @@ const CheckoutPage = () => {
   if (isLoading) return <h2>Loading...</h2>;
   const cartData = cartItems?.data?.data;
   const { totalPrice } = cartItems?.data;
-  console.log(cartData);
+  console.log(cartItems);
 
   const onFinish = async (values) => {
     const data = {
@@ -33,11 +33,13 @@ const CheckoutPage = () => {
           quantity: item?.variations?.quantity,
           size: item?.variations?.size,
           color: item?.variations?.color,
-          price: item?.variations?.quantity * item?.variations?.product[0]?.discountedPrice,
+          price: item?.variations?.product[0]?.discountedPrice,
         })),
       ],
       ...values,
     };
+
+    console.log('checkout data', data?.products[0]?.price);
 
     try {
       const res = await createOrder(data).unwrap();

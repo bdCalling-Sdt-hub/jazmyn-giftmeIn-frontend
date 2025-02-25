@@ -73,6 +73,23 @@ const cartApi = api.injectEndpoints({
       }),
       invalidatesTags: ['order'],
     }),
+
+    getCurrentSubscription: builder.query({
+      query: () => ({
+        url: '/payment',
+        method: 'GET',
+      }),
+      providesTags: ['subscription'],
+    }),
+
+    //order history
+    getOrders: builder.query({
+      query: () => ({
+        url: '/product-history',
+        method: 'GET',
+      }),
+      providesTags: ['order'],
+    }),
   }),
 });
 
@@ -85,4 +102,6 @@ export const {
   useDeleteFromCartMutation,
   useCreateWishListMutation,
   useCreateSubscriptionMutation,
+  useGetCurrentSubscriptionQuery,
+  useGetOrdersQuery,
 } = cartApi;

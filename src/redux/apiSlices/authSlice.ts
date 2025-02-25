@@ -18,6 +18,14 @@ const authApi = api.injectEndpoints({
       }),
     }),
 
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: '/auth/change-password',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
     getUserProfile: builder.query({
       query: () => ({
         url: '/user/profile',
@@ -25,6 +33,7 @@ const authApi = api.injectEndpoints({
       }),
       providesTags: ['userProfile'],
     }),
+
     updateUserProfile: builder.mutation({
       query: (data) => ({
         url: '/user/profile',
@@ -36,4 +45,10 @@ const authApi = api.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation, useGetUserProfileQuery, useUpdateUserProfileMutation } = authApi;
+export const {
+  useLoginMutation,
+  useSignUpMutation,
+  useChangePasswordMutation,
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+} = authApi;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetOrdersQuery } from '@/redux/apiSlices/cartSlice';
-import { Input, Table } from 'antd';
+import { Input, Table, Tooltip } from 'antd';
 import { Eye, SearchIcon } from 'lucide-react';
 import moment from 'moment';
 
@@ -66,12 +66,13 @@ const columns = [
     render: (text: string, record: OrderHistoryData, index: number) => <span>{index + 1}</span>,
   },
   {
-    title: 'Date',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
+    title: 'Order Id',
+    dataIndex: '_id',
+    key: '_id',
     className: 'font-medium',
-    render: (text: string) => <span>{moment(text).format('DD MMM, YYYY hh:mm A')}</span>,
+    render: (text: string) => <Tooltip title={text}>{text?.slice(0, 8) + '...'}</Tooltip>,
   },
+
   {
     title: 'Product',
     dataIndex: 'products',
@@ -89,6 +90,13 @@ const columns = [
         {record?.products?.reduce((acc: number, product: any) => acc + product?.price * product?.quantity, 0)}
       </span>
     ),
+  },
+  {
+    title: 'Date',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+    className: 'font-medium w-[17%]',
+    render: (text: string) => <span>{moment(text).format('DD MMM, YYYY hh:mm A')}</span>,
   },
   {
     title: 'Status',
@@ -111,7 +119,9 @@ const OrderHistoryPage = () => {
   const { data: getOrders, isLoading } = useGetOrdersQuery(undefined);
 
   if (isLoading) return <div>Loading...</div>;
-  const orders = getOrders?.data;
+  const orders = getOrders?.data
+    ?.slice()
+    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   console.log(orders);
 
   return (

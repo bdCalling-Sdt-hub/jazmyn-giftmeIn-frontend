@@ -64,6 +64,7 @@ const page = () => {
   const categoriesData = categories?.data?.data;
   const wishListData = wishList?.data;
   const userId = userProfile?.data?._id;
+  console.log(productsData);
 
   // Extract wishlist product IDs
   const wishlistedProductIds = wishListData?.map((item) => item.event?._id) || [];

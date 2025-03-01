@@ -32,18 +32,24 @@ const CurrentPlan = () => {
       <h2 className="text-xl font-semibold mb-6">Your Current Subscription Plan</h2>
 
       <div className="bg-[#FFF1F8] border border-primary rounded-lg p-4 mb-6">
-        <div className="flex items-start gap-3">
-          <div className="bg-primary rounded-full p-1 mt-1">
-            <Check className="w-4 h-4 text-white" />
+        {subscription ? (
+          <div className="flex items-start gap-3">
+            <div className="bg-primary rounded-full p-1 mt-1">
+              <Check className="w-4 h-4 text-white" />
+            </div>
+            <div className="text-left">
+              <h3 className="font-semibold text-lg">{subscription?.package?.category}</h3>
+              <p className="text-gray-600">{subscription?.package?.description}</p>
+              <p className="text-primary font-semibold text-lg mt-1">
+                ${subscription?.package?.price} / {subscription?.package?.duration}
+              </p>
+            </div>
           </div>
-          <div className="text-left">
-            <h3 className="font-semibold text-lg">{subscription?.package?.category}</h3>
-            <p className="text-gray-600">{subscription?.package?.description}</p>
-            <p className="text-primary font-semibold text-lg mt-1">
-              ${subscription?.package?.price} / {subscription?.package?.duration}
-            </p>
+        ) : (
+          <div className="text-center text-pink-600">
+            <p>No subscription found.</p>
           </div>
-        </div>
+        )}
       </div>
 
       <Link href="/subscriptions">

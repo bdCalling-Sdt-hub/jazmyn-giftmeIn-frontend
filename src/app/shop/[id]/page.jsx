@@ -28,7 +28,7 @@ const Product = () => {
 
   useEffect(() => {
     if (productData) {
-      setMainImage(productData?.featureImage);
+      setMainImage(productData?.data?.feature);
     }
   }, [productData]);
 
@@ -39,7 +39,7 @@ const Product = () => {
   const product = productData?.data;
   const userId = userProfile?.data?._id;
   const cartData = cartItems?.data;
-  // console.log(cartData);
+  console.log(product);
 
   // Function to calculate total price
   const totalPrice = product?.discountedPrice * quantity;
@@ -113,7 +113,7 @@ const Product = () => {
             {/* Main Image */}
             <div className="w-full mb-5">
               <img
-                className="md:w-[600px] object-contain w-[350px] h-[300px] md:h-[440px]"
+                className="md:w-[600px] rounded-2xl object-contain w-[350px] h-[300px] md:h-[440px]"
                 src={getImageUrl(mainImage)}
                 alt="Main Image"
               />
@@ -122,29 +122,35 @@ const Product = () => {
             {/* Thumbnail Images */}
             <div className="grid grid-cols-4 gap-2">
               <img
-                src={getImageUrl(product?.additionalImages[0])}
+                src={getImageUrl(product?.additional[0])}
                 alt="Thumbnail 1"
                 className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(product?.additionalImages[0])}
+                onClick={() => setMainImage(product?.additional[0])}
               />
-              <img
-                src={getImageUrl(product?.additionalImages[1])}
-                alt="Thumbnail 2"
-                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(product?.additionalImages[1])}
-              />
-              <img
-                src={getImageUrl(product?.additionalImages[2])}
-                alt="Thumbnail 3"
-                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(product?.additionalImages[2])}
-              />
-              <img
-                src={getImageUrl(product?.additionalImages[3])}
-                alt="Thumbnail 4"
-                className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(product?.additionalImages[3])}
-              />
+              {product?.additional[1] && (
+                <img
+                  src={getImageUrl(product?.additional[1])}
+                  alt="Thumbnail 2"
+                  className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                  onClick={() => setMainImage(product?.additional[1])}
+                />
+              )}
+              {product?.additional[2] && (
+                <img
+                  src={getImageUrl(product?.additional[2])}
+                  alt="Thumbnail 3"
+                  className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                  onClick={() => setMainImage(product?.additional[2])}
+                />
+              )}
+              {product?.additional[3] && (
+                <img
+                  src={getImageUrl(product?.additional[3])}
+                  alt="Thumbnail 4"
+                  className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
+                  onClick={() => setMainImage(product?.additional[3])}
+                />
+              )}
             </div>
           </div>
           <div className="md:space-y-4 md:w-[55%] mt-7 md:mt-0">

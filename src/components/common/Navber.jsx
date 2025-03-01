@@ -15,6 +15,7 @@ const navLinks = [
   { name: 'Subscriptions', path: '/subscriptions' },
   { name: 'About us', path: '/about' },
   { name: 'Contact us', path: '/contact' },
+  // { name: 'Survey Questions', path: '/surveyQuestions' },
 ];
 
 const NavLink = ({ name, path, isActive, closeMobileMenu }) => (
@@ -57,7 +58,7 @@ const Navbar = () => {
 
   const profile = profileData?.data;
   const cart = cartItems?.data?.data;
-  // console.log(cart);
+  console.log(profile);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -78,17 +79,19 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex space-x-9">
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.name}
-              name={link.name}
-              path={link.path}
-              isActive={pathname === link.path}
-              closeMobileMenu={closeMobileMenu}
-            />
-          ))}
-        </nav>
+        {profile && (
+          <nav className="hidden md:flex space-x-9">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                name={link.name}
+                path={link.path}
+                isActive={pathname === link.path}
+                closeMobileMenu={closeMobileMenu}
+              />
+            ))}
+          </nav>
+        )}
 
         {/* Icons and Profile */}
 

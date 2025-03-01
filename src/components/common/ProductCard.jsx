@@ -7,14 +7,14 @@ import { getImageUrl } from '@/util/getImgUrl';
 import { FaHeart } from 'react-icons/fa';
 
 const ProductCard = ({ product }) => {
-  // console.log(product);
+  console.log(product);
 
   return (
     <div className="relative border-2 rounded-2xl md:w-[290px] group bg-white bg-opacity-30  hover:border-primary ">
       <div>
         <div className="relative">
           <Image
-            src={getImageUrl(product?.featureImage)}
+            src={getImageUrl(product?.feature)}
             alt={product?.title}
             className=" h-[250px] w-full rounded-2xl object-cover p-4 overflow-hidden"
             width={250}

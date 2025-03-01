@@ -1,9 +1,38 @@
 'use client';
 import BreadcrumbsBanner from '@/components/common/BreadcrumbsBanner';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
+import { useCreateContactMutation } from '@/redux/apiSlices/contactSlice';
+import toast from 'react-hot-toast';
 
 const page = () => {
+  const [createContact] = useCreateContactMutation();
+
+  // State management for form fields
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState('');
+  const [message, setMessage] = useState('');
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await createContact({ name, email, phone, country, message }).unwrap();
+      // Optionally, reset form fields or show success message
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCountry('');
+      setMessage('');
+      toast.success('Contact created successfully!');
+    } catch (error) {
+      console.error('Failed to create contact:', error);
+      toast.error('Failed to create contact. Please try again.');
+    }
+  };
+
   return (
     <section>
       <BreadcrumbsBanner pageName="Contact us" routeName="Contact us" />
@@ -45,7 +74,7 @@ const page = () => {
               Get in <span className="text-pink-500">touch with us.</span>
             </h2>
             <div className="bg-[#DFE0E4] h-[1px] mt-3"></div>
-            <form className="mt-8 space-y-6">
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700" htmlFor="name">
@@ -54,6 +83,8 @@ const page = () => {
                   <input
                     type="text"
                     id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="Enter Your Name..."
                     className="mt-1 w-full p-[10px] border placeholder:text-sm rounded-[8px] focus:outline-none"
                   />
@@ -65,6 +96,8 @@ const page = () => {
                   <input
                     type="email"
                     id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter Your Email..."
                     className="mt-1 w-full p-[10px] border placeholder:text-sm rounded-[8px] focus:outline-none"
                   />
@@ -76,6 +109,8 @@ const page = () => {
                   <input
                     type="tel"
                     id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="Enter Your Number..."
                     className="mt-1 w-full p-[10px] border placeholder:text-sm rounded-[8px] focus:outline-none"
                   />
@@ -86,6 +121,8 @@ const page = () => {
                   </label>
                   <select
                     id="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
                     className="mt-1 w-full p-[10px] placeholder:text-gray-700 border text-sm rounded-[8px] focus:outline-none"
                   >
                     <option className="text-gray-700">Select a Country...</option>
@@ -101,6 +138,8 @@ const page = () => {
                 </label>
                 <textarea
                   id="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   rows="4"
                   placeholder="Enter Your Message..."
                   className="mt-1 w-full p-[10px] border placeholder:text-sm rounded-[8px] resize-none focus:outline-none"

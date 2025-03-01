@@ -23,12 +23,14 @@ const CheckoutPage = () => {
   if (isLoading) return <h2>Loading...</h2>;
   const cartData = cartItems?.data?.data;
   const { totalPrice } = cartItems?.data;
-  console.log(cartItems);
+  // console.log(cartItems);
+  // console.log(cartData);
 
   const onFinish = async (values) => {
     const data = {
       products: [
         ...cartData?.map((item) => ({
+          productName: item?.variations?.product[0]?.productName,
           id: item?._id,
           quantity: item?.variations?.quantity,
           size: item?.variations?.size,
@@ -39,13 +41,14 @@ const CheckoutPage = () => {
       ...values,
     };
 
-    console.log('checkout data', data?.products[0]?.price);
+    // console.log('checkout data', data);
 
     try {
       const res = await createOrder(data).unwrap();
       console.log(res);
       if (res.data?.paymentUrl) {
         window.location.href = res.data?.paymentUrl;
+        // console.log('payment linkkkkkk', res.data?.paymentUrl);
       }
     } catch (error) {
       console.log(error);
@@ -124,7 +127,7 @@ const CheckoutPage = () => {
                   <div className="flex items-center gap-2">
                     <Image
                       className="w-16 h-16 object-cover rounded-lg"
-                      src={getImageUrl(product?.variations?.product[0]?.featureImage)}
+                      src={getImageUrl(product?.variations?.product[0]?.feature)}
                       width={50}
                       height={50}
                       alt={product.title}

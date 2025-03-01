@@ -16,6 +16,7 @@ const Cart = () => {
   }
 
   const cartItems = cartData?.data?.data || [];
+  console.log(cartItems);
 
   // Update quantity
   const updateQuantity = async (record, newQuantity) => {
@@ -58,7 +59,7 @@ const Cart = () => {
       render: (_, record) => (
         <div className="flex items-center gap-4">
           <img
-            src={getImageUrl(record?.variations?.product[0]?.featureImage)}
+            src={getImageUrl(record?.variations?.product[0]?.feature)}
             alt={record?.variations?.product[0]?.productName}
             className="w-16 h-16 object-cover"
           />

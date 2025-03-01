@@ -3,7 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://10.0.70.188:8000/api/v1',
+    // baseUrl: 'https://rakib.binarybards.online/api/v1/',
+    baseUrl: 'https://rakib5001.binarybards.online/api/v1/',
+    // baseUrl: 'http://10.0.70.188:5001/api/v1/',
 
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -14,7 +16,17 @@ const api = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ['category', 'product', 'event', 'order', 'userProfile', 'cart', 'wishlist', 'subscription'],
+  tagTypes: [
+    'category',
+    'product',
+    'event',
+    'order',
+    'userProfile',
+    'cart',
+    'wishlist',
+    'subscription',
+    'surveyQuestions',
+  ],
 });
 
 export const { reducer } = api;

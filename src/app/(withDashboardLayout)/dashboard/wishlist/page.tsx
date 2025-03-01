@@ -23,7 +23,7 @@ const WishlistPage = () => {
 
   const wishlist = wishListList?.data || [];
   const userId = userProfile?.data?._id;
-  // console.log(wishlist);
+  console.log(wishlist);
 
   const handleAddToWishlist = async (id: string) => {
     try {
@@ -56,7 +56,7 @@ const WishlistPage = () => {
               {/* Image Container */}
               <div className="relative aspect-square">
                 <img
-                  src={getImageUrl(item?.event?.featureImage)}
+                  src={getImageUrl(item?.event?.feature)}
                   alt={item?.event?.productName}
                   className="w-full h-full p-2 rounded-md object-cover"
                 />

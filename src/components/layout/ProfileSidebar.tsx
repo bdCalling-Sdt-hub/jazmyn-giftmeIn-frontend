@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { FaExclamation } from 'react-icons/fa';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import { getImageUrl } from '@/util/getImgUrl';
+import { TbBasketQuestion } from 'react-icons/tb';
 
 const DashboardSidebar = () => {
   const [previewImage, setPreviewImage] = useState('');
@@ -88,6 +89,11 @@ const DashboardSidebar = () => {
       key: 'subscriptions',
       icon: <Crown size={20} />,
       label: <Link href="/dashboard/subscriptions">Subscriptions</Link>,
+    },
+    {
+      key: 'surveys',
+      icon: <TbBasketQuestion size={20} />,
+      label: <Link href="/dashboard/surveys">Surveys</Link>,
     },
     {
       key: 'settings',

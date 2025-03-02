@@ -1,13 +1,17 @@
-"use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react"; // For icons
-import Link from "next/link";
+'use client';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { Eye, EyeOff } from 'lucide-react'; // For icons
+import Link from 'next/link';
+import { useLoginMutation } from '@/redux/apiSlices/authSlice';
+import toast from 'react-hot-toast';
 
 const page = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [login] = useLoginMutation();
 
   // React Hook Form setup
   const {
@@ -22,8 +26,20 @@ const page = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit = (data) => {
-    console.log(data); // Handle your form submission here (e.g., make an API request)
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const response = await login(data).unwrap();
+      console.log(response);
+      if (response.success) {
+        localStorage.setItem('authToken', response?.data?.createToken);
+        toast.success('Login successful');
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -31,15 +47,11 @@ const page = () => {
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="w-full max-w-lg bg-white shadow-lg rounded-lg px-6 sm:px-10 py-8"
       >
-        <h2 className="text-center text-2xl lg:text-3xl font-semibold text-primary">
-          Sign in
-        </h2>
-        <p className="text-center text-gray-600 text-sm lg:text-base mt-2">
-          Login with your GiftmeIn account
-        </p>
+        <h2 className="text-center text-2xl lg:text-3xl font-semibold text-primary">Sign in</h2>
+        <p className="text-center text-gray-600 text-sm lg:text-base mt-2">Login with your GiftmeIn account</p>
         <div className="w-full h-px bg-gray-200 my-4"></div>
 
         <motion.form
@@ -50,10 +62,7 @@ const page = () => {
           className="space-y-6"
         >
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email address
             </label>
             <div className="mt-1 relative">
@@ -62,28 +71,23 @@ const page = () => {
                 name="email"
                 type="email"
                 placeholder="Your Email"
-                {...register("email", {
-                  required: "Email is required",
+                {...register('email', {
+                  required: 'Email is required',
                   pattern: {
                     value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                    message: "Invalid email format",
+                    message: 'Invalid email format',
                   },
                 })}
                 className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
-                  errors.email ? "border-red-500" : ""
+                  errors.email ? 'border-red-500' : ''
                 }`}
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <div className="mt-1 relative">
@@ -91,16 +95,16 @@ const page = () => {
                 id="password"
                 name="password"
                 placeholder="Your Password"
-                type={showPassword ? "text" : "password"}
-                {...register("password", {
-                  required: "Password is required",
+                type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: 'Password is required',
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 6 characters",
+                    message: 'Password must be at least 6 characters',
                   },
                 })}
                 className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
-                  errors.password ? "border-red-500" : ""
+                  errors.password ? 'border-red-500' : ''
                 }`}
               />
               <button
@@ -111,24 +115,15 @@ const page = () => {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </div>
 
           <div className="flex items-center justify-between">
             <label className="flex items-center space-x-2 text-sm text-gray-900">
-              <input
-                id="remember_me"
-                type="checkbox"
-                className="form-checkbox h-4 w-4 text-primary"
-              />
+              <input id="remember_me" type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
               <span className="select-none">Remember me</span>
             </label>
-            <a
-              href="#"
-              className="text-sm text-primary hover:underline focus:outline-none"
-            >
+            <a href="#" className="text-sm text-primary hover:underline focus:outline-none">
               Forgot password?
             </a>
           </div>
@@ -145,7 +140,7 @@ const page = () => {
         </motion.form>
 
         <p className="text-center text-gray-600 text-[16px] mt-4">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <Link href={'/auth/signup'} className="text-primary font-medium hover:underline">
             Register.
           </Link>

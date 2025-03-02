@@ -1,7 +1,7 @@
 'use client';
 import { useCreateEventMutation } from '@/redux/apiSlices/eventSlice';
 import { useGetCategoriesQuery } from '@/redux/apiSlices/productSlice';
-import { Form, Input, Select, DatePicker, Button } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Spin } from 'antd';
 import toast from 'react-hot-toast';
 
 const AddEvent = () => {
@@ -11,7 +11,11 @@ const AddEvent = () => {
   const { data: categoryData, isLoading } = useGetCategoriesQuery(undefined);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin></Spin>
+      </div>
+    );
   }
 
   //   const categoryOptions = categoryData?.data?.map((category: any) => ({

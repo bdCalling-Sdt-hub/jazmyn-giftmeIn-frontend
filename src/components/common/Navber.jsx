@@ -2,7 +2,7 @@
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import { useGetCartQuery } from '@/redux/apiSlices/cartSlice';
 import { getImageUrl } from '@/util/getImgUrl';
-import { Badge, Button } from 'antd';
+import { Badge, Button, Spin } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -53,7 +53,11 @@ const Navbar = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin></Spin>
+      </div>
+    );
   }
 
   const profile = profileData?.data;

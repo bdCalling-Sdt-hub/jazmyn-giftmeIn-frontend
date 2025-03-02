@@ -142,6 +142,7 @@ const OrderHistoryPage = () => {
           scroll={{ x: true }}
           columns={columns}
           dataSource={orders}
+          rowKey="_id"
           pagination={{
             pageSize: 8,
             className: 'p-4',

@@ -13,11 +13,11 @@ const SubscriptionsPage = () => {
             label: 'Current Subscriptions',
             content: <CurrentPlan />,
           },
-          {
-            key: 'payment-history',
-            label: 'Payment History',
-            content: <PaymentHistory />,
-          },
+          // {
+          //   key: 'payment-history',
+          //   label: 'Payment History',
+          //   content: <PaymentHistory />,
+          // },
           //     {
           //       key: 'payment-method',
           //       label: 'Payment Method',

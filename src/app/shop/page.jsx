@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 
 const page = () => {
   const [checkedCategories, setCheckedCategories] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [priceRange, setPriceRange] = useState([0, 3000000]);
   const [debouncedPriceRange, setDebouncedPriceRange] = useState(priceRange);
   const [availability, setAvailability] = useState('inStock');
@@ -43,6 +44,10 @@ const page = () => {
     setPriceRange(value);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -64,8 +69,11 @@ const page = () => {
   const categoriesData = categories?.data?.data;
   const wishListData = wishList?.data;
   const userId = userProfile?.data?._id;
-  console.log(productsData);
+  console.log(categoriesData);
 
+  const filteredProductsData = productsData?.filter((product) =>
+    product.productName.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
   // Extract wishlist product IDs
   const wishlistedProductIds = wishListData?.map((item) => item.event?._id) || [];
 
@@ -89,7 +97,13 @@ const page = () => {
             {/* Search Bar */}
             <div className="bg-white shadow-md p-5 space-y-2 rounded-2xl">
               <h1 className="text-xl font-semibold uppercase text-[#160E4B]">Search</h1>
-              <Input type="search" placeholder="Search products..." className="w-full max-w-md px-4 py-2 mb-5" />
+              <Input
+                type="search"
+                placeholder="Search products..."
+                className="w-full max-w-md px-4 py-2 mb-5"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
             </div>
 
             {/* Categories */}
@@ -173,9 +187,9 @@ const page = () => {
               <div className="flex items-center justify-center mt-10">
                 <Spin size="large" />
               </div>
-            ) : productsData && productsData.length > 0 ? (
+            ) : filteredProductsData && filteredProductsData.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-10 grid-cols-1">
-                {productsData.map((product) => (
+                {filteredProductsData.map((product) => (
                   <div key={product._id} className="relative">
                     <ProductCard product={product} />
                     {wishlistedProductIds.includes(product._id) ? (

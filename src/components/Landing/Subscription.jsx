@@ -29,8 +29,10 @@ const Subscription = ({ route }) => {
   const email = userProfile?.data?.email;
   console.log(packages);
 
-  const monthlyPlans = packages?.filter((pkg) => pkg?.duration === 'month');
-  const yearlyPlans = packages?.filter((pkg) => pkg?.duration === 'year');
+  const monthlyPlans = packages?.filter((pkg) => pkg?.duration === 'month' || pkg?.paymentType === 'Free');
+  const yearlyPlans = packages?.filter((pkg) => pkg?.duration === 'year' || pkg?.paymentType === 'Free');
+
+  console.log('monthlyPlans', monthlyPlans, 'yearlyPlans', yearlyPlans);
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
@@ -98,7 +100,7 @@ const Subscription = ({ route }) => {
         {/* Subscription Plan Details */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
           {(isMonthly ? monthlyPlans : yearlyPlans)
-            ?.filter((data) => !(route === '/subscriptions' && data.price === 0))
+            // ?.filter((data) => !(route === '/subscriptions' && data.price === 0))
             ?.map((data) => (
               <motion.div
                 key={data._id}

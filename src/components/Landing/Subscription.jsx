@@ -9,6 +9,8 @@ import { useGetSubscriptionsPackageQuery } from '@/redux/apiSlices/cartSlice';
 
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -21,13 +23,15 @@ const Subscription = ({ route }) => {
   const { data: userProfile, isLoading } = useGetUserProfileQuery();
   const { data: subscriptionPackages, isLoading: isLoadingPackages } = useGetSubscriptionsPackageQuery();
 
+  const router = useRouter();
+
   if (isLoading || isLoadingPackages) {
     return <div>Loading...</div>;
   }
 
   const packages = subscriptionPackages?.data;
-  const email = userProfile?.data?.email;
-  console.log(packages);
+  const email = userProfile?.data?.email || [];
+  // console.log(userData);
 
   const monthlyPlans = packages?.filter((pkg) => pkg?.duration === 'month' || pkg?.paymentType === 'Free');
   const yearlyPlans = packages?.filter((pkg) => pkg?.duration === 'year' || pkg?.paymentType === 'Free');
@@ -71,8 +75,8 @@ const Subscription = ({ route }) => {
               className="absolute w-1/2 h-full bg-pink-500 rounded z-0"
               layout
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              initial={{ x: isMonthly ? 0 : '50%' }}
-              animate={{ x: isMonthly ? 0 : '100%' }}
+              initial={{ y: isMonthly ? 0 : '50%' }}
+              animate={{ y: isMonthly ? 0 : '100%' }}
             />
 
             {/* Monthly Button */}
@@ -158,7 +162,16 @@ const Subscription = ({ route }) => {
       <Modal
         title={selectedPlan ? selectedPlan.category : ''}
         open={isModalOpen}
-        onOk={() => handleSubscribe(`${selectedPlan?.paymentLink}?prefilled_email=${email}`)}
+        onOk={() => {
+          const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+          if (!authToken) {
+            router.push('/auth/login');
+            toast.error('Please log in to subscribe.');
+            return;
+          }
+          // Proceed with subscription if authenticated
+          handleSubscribe(`${selectedPlan?.paymentLink}?prefilled_email=${email}`);
+        }}
         onCancel={handleCloseModal}
         okText="Subscribe Now"
         cancelText="Cancel"

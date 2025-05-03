@@ -29,6 +29,22 @@ const authApi = api.injectEndpoints({
       providesTags: ['product'],
     }),
 
+    getShopifyProducts: builder.query({
+      query: () => ({
+        url: `/product/search`,
+        method: 'GET',
+      }),
+      providesTags: ['product'],
+    }),
+
+    getSingleShopifyProduct: builder.query({
+      query: (id) => ({
+        url: `/product/shopify/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['product'],
+    }),
+
     getSingleProduct: builder.query({
       query: (id) => ({
         url: `/product/${id}`,
@@ -48,4 +64,10 @@ const authApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetAllProductsQuery, useGetSingleProductQuery, useGetCategoriesQuery } = authApi;
+export const {
+  useGetAllProductsQuery,
+  useGetShopifyProductsQuery,
+  useGetSingleShopifyProductQuery,
+  useGetSingleProductQuery,
+  useGetCategoriesQuery,
+} = authApi;

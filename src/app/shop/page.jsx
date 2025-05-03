@@ -5,7 +5,11 @@ import { Checkbox, ConfigProvider, Input, Pagination, Select, Slider, Spin } fro
 import ProductCard from '@/components/common/ProductCard';
 import debounce from 'lodash/debounce';
 import React, { useEffect, useState } from 'react';
-import { useGetAllProductsQuery, useGetCategoriesQuery } from '@/redux/apiSlices/productSlice';
+import {
+  useGetAllProductsQuery,
+  useGetCategoriesQuery,
+  useGetShopifyProductsQuery,
+} from '@/redux/apiSlices/productSlice';
 import { useCreateWishListMutation, useGetCartQuery, useGetWishlistQuery } from '@/redux/apiSlices/cartSlice';
 import { FaHeart } from 'react-icons/fa'; // Import heart icon
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
@@ -34,6 +38,8 @@ const page = () => {
     availability,
   });
 
+  const { data: shopifyProduct, isLoading: isLoadingShopify } = useGetShopifyProductsQuery();
+
   const { data: wishList, isLoading: isLoadingWishList } = useGetWishlistQuery();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery();
   const { data: userProfile, isLoading: isLoadingUser } = useGetUserProfileQuery();
@@ -61,15 +67,16 @@ const page = () => {
     setAvailability(e.target.value);
   };
 
-  if (isLoading || isLoadingCategories || isLoadingWishList) {
+  if (isLoading || isLoadingCategories || isLoadingWishList || isLoadingShopify || isLoadingUser) {
     return <p>Loading...</p>;
   }
 
   const productsData = products?.data;
+  const shopifyProductsData = shopifyProduct?.data;
   const categoriesData = categories?.data?.data;
   const wishListData = wishList?.data;
   const userId = userProfile?.data?._id;
-  console.log(categoriesData);
+  // console.log(shopifyProductsData);
 
   const filteredProductsData = productsData?.filter((product) =>
     product.productName.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -187,20 +194,22 @@ const page = () => {
               <div className="flex items-center justify-center mt-10">
                 <Spin size="large" />
               </div>
-            ) : filteredProductsData && filteredProductsData.length > 0 ? (
+            ) : shopifyProductsData && shopifyProductsData.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-10 grid-cols-1">
-                {filteredProductsData.map((product) => (
-                  <div key={product._id} className="relative">
-                    <ProductCard product={product} />
-                    {wishlistedProductIds.includes(product._id) ? (
+                {shopifyProductsData.map((product) => (
+                  <div key={product.id} className="relative h-full">
+                    <div className="h-full flex flex-col">
+                      <ProductCard product={product} />
+                    </div>
+                    {wishlistedProductIds.includes(product.id) ? (
                       <FaHeart
-                        onClick={() => handleAddToWishlist(product._id)}
+                        onClick={() => handleAddToWishlist(product.id)}
                         className="absolute top-4 -right-3 text-red-500 cursor-pointer"
                         size={24}
                       />
                     ) : (
                       <FaHeart
-                        onClick={() => handleAddToWishlist(product._id)}
+                        onClick={() => handleAddToWishlist(product.id)}
                         className="absolute cursor-pointer top-4 -right-3 text-black"
                         size={24}
                       />

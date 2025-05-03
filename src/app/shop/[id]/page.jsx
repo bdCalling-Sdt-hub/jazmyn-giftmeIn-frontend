@@ -8,7 +8,11 @@ import { ConfigProvider, Tabs } from 'antd';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useGetSingleProductQuery } from '@/redux/apiSlices/productSlice';
+import {
+  useGetShopifyProductsQuery,
+  useGetSingleProductQuery,
+  useGetSingleShopifyProductQuery,
+} from '@/redux/apiSlices/productSlice';
 import { getImageUrl } from '@/util/getImgUrl';
 import { useAddToCartMutation, useGetCartQuery } from '@/redux/apiSlices/cartSlice';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
@@ -21,7 +25,8 @@ const Product = () => {
 
   const { id } = useParams();
 
-  const { data: productData, isLoading } = useGetSingleProductQuery(id);
+  const { data: productData, isLoading } = useGetSingleShopifyProductQuery(id);
+  // const { data: singleShopifyProduct, isLoading: shopifyProductLoading } = useGetSingleProductQuery(id);
   const [addToCart] = useAddToCartMutation();
   const { data: userProfile, isLoading: userProfileLoading } = useGetUserProfileQuery();
   const { data: cartItems, isLoading: cartLoading } = useGetCartQuery();
@@ -37,6 +42,7 @@ const Product = () => {
   }
 
   const product = productData?.data;
+
   const userId = userProfile?.data?._id;
   const cartData = cartItems?.data;
   console.log(product);
@@ -107,10 +113,10 @@ const Product = () => {
 
   return (
     <>
-      <div className="md:p-28 p-8 max-w-7xl mx-auto font-fontTwo">
+      {/* <div className="md:p-28 p-8 max-w-7xl mx-auto font-fontTwo">
         <div className="md:flex items-center justify-center gap-5">
           <div className="md:w-[45%] flex flex-col items-center">
-            {/* Main Image */}
+        
             <div className="w-full mb-5">
               <img
                 className="md:w-[600px] rounded-2xl object-contain w-[350px] h-[300px] md:h-[440px]"
@@ -119,15 +125,14 @@ const Product = () => {
               />
             </div>
 
-            {/* Thumbnail Images */}
             <div className="grid grid-cols-4 gap-2">
               <img
-                src={getImageUrl(product?.additional[0])}
+                src={getImageUrl(product?.additional)}
                 alt="Thumbnail 1"
                 className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
                 onClick={() => setMainImage(product?.additional[0])}
               />
-              {product?.additional[1] && (
+              {product?.additional && (
                 <img
                   src={getImageUrl(product?.additional[1])}
                   alt="Thumbnail 2"
@@ -135,7 +140,7 @@ const Product = () => {
                   onClick={() => setMainImage(product?.additional[1])}
                 />
               )}
-              {product?.additional[2] && (
+              {product?.additional && (
                 <img
                   src={getImageUrl(product?.additional[2])}
                   alt="Thumbnail 3"
@@ -143,7 +148,7 @@ const Product = () => {
                   onClick={() => setMainImage(product?.additional[2])}
                 />
               )}
-              {product?.additional[3] && (
+              {product?.additional && (
                 <img
                   src={getImageUrl(product?.additional[3])}
                   alt="Thumbnail 4"
@@ -155,16 +160,7 @@ const Product = () => {
           </div>
           <div className="md:space-y-4 md:w-[55%] mt-7 md:mt-0">
             <h1 className="md:text-3xl text-2xl clash">{product?.productName}</h1>
-            {/* <div className="flex gap-2">
-              <div className="flex gap-1">
-                <FaStar className="text-[#FC2FAD]" />
-                <FaStar className="text-[#FC2FAD]" />
-                <FaStar className="text-[#FC2FAD]" />
-                <FaStar className="text-[#FC2FAD]" />
-                <FaStar className="text-[#FC2FAD]" />
-              </div>
-              <p>{product?.reviews.length} Reviews</p>
-            </div> */}
+
             <div className=" relative flex gap-3 text-primary">
               {product?.discountedPrice ? (
                 <div>
@@ -273,14 +269,17 @@ const Product = () => {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: '#FC2FAD', // Set your active tab underline color
+                colorPrimary: '#FC2FAD', 
               },
             }}
           >
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
           </ConfigProvider>
         </div>
-      </div>
+      </div> */}
+
+      <div dangerouslySetInnerHTML={{ __html: product?.body_html }} />
+
       <div className="mb-10 px-8 max-w-7xl mx-auto font-fontTwo">
         <h1 className="clash md:text-4xl text-2xl border-b-4 border-[#FC2FAD] md:w-[28%] w-[70%]">
           <span className="text-[#FC2FAD]">Related</span> Products

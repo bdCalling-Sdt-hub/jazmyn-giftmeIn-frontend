@@ -69,20 +69,11 @@ const Subscription = ({ route }) => {
 
         {/* Subscription Toggle (Monthly/Yearly) */}
         <div className="flex items-center justify-center mt-10">
-          <div className="relative flex items-center border border-gray-100 rounded shadow-md w-[350px] h-[60px]">
-            {/* Highlight (motion.div) */}
-            <motion.div
-              className="absolute w-1/2 h-full bg-pink-500 rounded z-0"
-              layout
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              initial={{ y: isMonthly ? 0 : '50%' }}
-              animate={{ y: isMonthly ? 0 : '100%' }}
-            />
-
+          <div className="relative flex items-center border border-gray-100 rounded-lg shadow-md w-[350px] h-[60px] overflow-hidden">
             {/* Monthly Button */}
             <button
-              className={`relative z-10 w-1/2 text-center text-sm font-medium transition ${
-                isMonthly ? 'text-white' : 'text-gray-700'
+              className={`relative z-10 w-1/2 h-full text-center text-sm font-medium transition-colors duration-300 ${
+                isMonthly ? 'bg-pink-500 text-white' : 'bg-transparent text-gray-700 hover:bg-pink-50'
               }`}
               onClick={() => setIsMonthly(true)}
             >
@@ -91,12 +82,12 @@ const Subscription = ({ route }) => {
 
             {/* Yearly Button */}
             <button
-              className={`relative z-10 w-1/2 text-center text-sm font-medium transition ${
-                !isMonthly ? 'text-white' : 'text-gray-700'
+              className={`relative z-10 w-1/2 h-full text-center text-sm font-medium transition-colors duration-300 ${
+                !isMonthly ? 'bg-pink-500 text-white' : 'bg-transparent text-gray-700 hover:bg-pink-50'
               }`}
               onClick={() => setIsMonthly(false)}
             >
-              Yearly <span className="text-gray-600">(Save 20%)</span>
+              Yearly <span className={`text-xs ${!isMonthly ? 'text-pink-100' : 'text-gray-500'}`}>(Save 20%)</span>
             </button>
           </div>
         </div>

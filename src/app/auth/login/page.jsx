@@ -7,19 +7,21 @@ import { Eye, EyeOff } from 'lucide-react'; // For icons
 import Link from 'next/link';
 import { useLoginMutation } from '@/redux/apiSlices/authSlice';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const page = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const [login] = useLoginMutation();
+  // const [googleLogin] = useGoogleLoginMutation();
 
   // React Hook Form setup
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
-    clearErrors,
   } = useForm();
 
   const togglePasswordVisibility = () => {
@@ -30,17 +32,32 @@ const page = () => {
     console.log(data);
     try {
       const response = await login(data).unwrap();
-      console.log(response);
       if (response.success) {
-        localStorage.setItem('authToken', response?.data?.createToken);
+        Cookies.set('accessToken', response?.data?.createToken);
         toast.success('Login successful');
-        window.location.href = '/';
+        window.location.href = '/dashboard/surveys';
       }
     } catch (error) {
       console.error('Login failed:', error);
       toast.error(error?.data?.message || 'Something went wrong');
     }
   };
+
+  // const handleGoogleLogin = async () => {
+  //   // try {
+  //   //   const res = await googleLogin().unwrap();
+  //   //   if (res.success) {
+  //   //     localStorage.setItem('authToken', res?.data?.createToken);
+  //   //     toast.success('Login successful');
+  //   //     router.push('/');
+  //   //   } else {
+  //   //     toast.error(res?.data?.message || 'Something went wrong');
+  //   //   }
+  //   // } catch (error) {
+  //   //   console.error('Login failed:', error);
+  //   //   toast.error(error?.data?.message || 'Something went wrong');
+  //   // }
+  // };
 
   return (
     <div className="bg-gray-50 flex flex-col justify-center items-center py-12 px-6 sm:px-8 lg:px-12">
@@ -123,9 +140,9 @@ const page = () => {
               <input id="remember_me" type="checkbox" className="form-checkbox h-4 w-4 text-primary" />
               <span className="select-none">Remember me</span>
             </label>
-            <a href="#" className="text-sm text-primary hover:underline focus:outline-none">
+            {/* <a href="#" className="text-sm text-primary hover:underline focus:outline-none">
               Forgot password?
-            </a>
+            </a> */}
           </div>
 
           <motion.button
@@ -156,6 +173,7 @@ const page = () => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
           type="button"
+          onClick={() => (window.location.href = 'https://rakib5000.binarybards.online/api/v1/auth/google')}
           className="w-full mt-4 flex items-center justify-center gap-2 py-2 px-4 text-gray-800 bg-white border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
         >
           <Image src="/logo/google.png" height={18} width={18} alt="google login" />

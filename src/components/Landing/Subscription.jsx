@@ -6,7 +6,7 @@ import { MonthlyData, YearlyData } from '../../util/planData';
 import { Inter } from 'next/font/google';
 import { Modal } from 'antd';
 import { useGetSubscriptionsPackageQuery } from '@/redux/apiSlices/cartSlice';
-
+import Cookies from 'js-cookie';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -36,7 +36,7 @@ const Subscription = ({ route }) => {
   const monthlyPlans = packages?.filter((pkg) => pkg?.duration === 'month' || pkg?.paymentType === 'Free');
   const yearlyPlans = packages?.filter((pkg) => pkg?.duration === 'year' || pkg?.paymentType === 'Free');
 
-  console.log('monthlyPlans', monthlyPlans, 'yearlyPlans', yearlyPlans);
+  // console.log('monthlyPlans', monthlyPlans, 'yearlyPlans', yearlyPlans);
 
   const handleChoosePlan = (plan) => {
     setSelectedPlan(plan);
@@ -48,7 +48,7 @@ const Subscription = ({ route }) => {
   };
 
   const handleSubscribe = async (paymentLink) => {
-    window.location.href = paymentLink;
+    window.open(paymentLink, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -154,7 +154,8 @@ const Subscription = ({ route }) => {
         title={selectedPlan ? selectedPlan.category : ''}
         open={isModalOpen}
         onOk={() => {
-          const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+          const authToken =
+            localStorage.getItem('authToken') || sessionStorage.getItem('authToken') || Cookies.get('accessToken');
           if (!authToken) {
             router.push('/auth/login');
             toast.error('Please log in to subscribe.');

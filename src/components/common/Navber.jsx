@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -47,12 +48,15 @@ const Navbar = () => {
   const { data: profileData, isLoading } = useGetUserProfileQuery();
   const { data: cartItems, isLoading: cartLoading } = useGetCartQuery();
 
+  // console.log(profileData);
+
   useEffect(() => {
-    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    const token = Cookies.get('accessToken');
+    // console.log('tokennn', token);
     setToken(token);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || cartLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Spin></Spin>
@@ -62,7 +66,7 @@ const Navbar = () => {
 
   const profile = profileData?.data;
   const cart = cartItems?.data?.data;
-  console.log(profile);
+  // console.log(profile);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -105,7 +109,7 @@ const Navbar = () => {
               <Link href={'/dashboard/wishlist'}>
                 <Icon src="/logo/favorite.png" alt="favorite product" width={26} height={26} />
               </Link>
-              <Icon src="/logo/notification.png" alt="notification items icons" width={24} height={24} />
+              {/* <Icon src="/logo/notification.png" alt="notification items icons" width={24} height={24} /> */}
               <Link href={'/cart'}>
                 <Badge count={cart?.length} offset={[-5, 8]}>
                   <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
@@ -166,13 +170,13 @@ const Navbar = () => {
                   height={26}
                 />
               </Link>
-              <Icon
+              {/* <Icon
                 onClick={closeMobileMenu}
                 src="/logo/notification.png"
                 alt="notification items icons"
                 width={24}
                 height={24}
-              />
+              /> */}
               <Link onClick={closeMobileMenu} href={'/cart'}>
                 <Badge count={cart?.length}>
                   <Icon src="/logo/cart.png" alt="add to cart icons" width={38} height={42} />
@@ -184,11 +188,11 @@ const Navbar = () => {
                 className="flex items-center cursor-pointer space-x-2"
               >
                 <img
-                  src="/images/userProfile.jpg"
+                  src={getImageUrl(profile?.image)}
                   alt="Profile"
                   className="w-[45px] h-[45px] border-2 border-primary rounded-full object-cover"
                 />
-                <span className="text-[#333333] font-semibold">Sazzad</span>
+                <span className="text-[#333333] font-semibold">{profile?.name}</span>
               </Link>
             </div>
           </motion.nav>

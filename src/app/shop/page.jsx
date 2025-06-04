@@ -39,7 +39,6 @@ const page = () => {
   });
 
   const { data: shopifyProduct, isLoading: isLoadingShopify } = useGetShopifyProductsQuery();
-
   const { data: wishList, isLoading: isLoadingWishList } = useGetWishlistQuery();
   const { data: categories, isLoading: isLoadingCategories } = useGetCategoriesQuery();
   const { data: userProfile, isLoading: isLoadingUser } = useGetUserProfileQuery();
@@ -194,9 +193,9 @@ const page = () => {
               <div className="flex items-center justify-center mt-10">
                 <Spin size="large" />
               </div>
-            ) : shopifyProductsData && shopifyProductsData.length > 0 ? (
+            ) : filteredProductsData && filteredProductsData.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-10 grid-cols-1">
-                {shopifyProductsData.map((product) => (
+                {filteredProductsData?.map((product) => (
                   <div key={product.id} className="relative h-full">
                     <div className="h-full flex flex-col">
                       <ProductCard product={product} />

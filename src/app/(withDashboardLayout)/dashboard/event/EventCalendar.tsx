@@ -51,7 +51,7 @@ const EventCalendar: React.FC<EventCalendarProps> = ({ events }) => {
 
   const dateCellRender = (date: Dayjs) => {
     const formattedDate = date.format('YYYY-MM-DD');
-    const event = events.find((e) => dayjs(e.eventDate).format('YYYY-MM-DD') === formattedDate);
+    const event = events?.find((e) => dayjs(e.eventDate).format('YYYY-MM-DD') === formattedDate);
 
     return (
       <div
@@ -66,8 +66,8 @@ const EventCalendar: React.FC<EventCalendarProps> = ({ events }) => {
   };
 
   const nextEvent = events
-    .filter((e) => dayjs(e.eventDate).isAfter(dayjs()))
-    .sort((a, b) => dayjs(a.eventDate).diff(dayjs(b.eventDate)))[0];
+    ?.filter((e) => dayjs(e.eventDate).isAfter(dayjs()))
+    ?.sort((a, b) => dayjs(a.eventDate).diff(dayjs(b.eventDate)))[0];
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg border border-[#dfdddd63]">

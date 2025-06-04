@@ -1,6 +1,6 @@
 'use client';
-import { useCreateEventMutation } from '@/redux/apiSlices/eventSlice';
-import { useGetCategoriesQuery } from '@/redux/apiSlices/productSlice';
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import { useCreateEventMutation, useGetEventCategoriesQuery } from '@/redux/apiSlices/eventSlice';
 import { Form, Input, Select, DatePicker, Button, Spin } from 'antd';
 import toast from 'react-hot-toast';
 
@@ -8,48 +8,49 @@ const AddEvent = () => {
   const [form] = Form.useForm();
 
   const [createEvent] = useCreateEventMutation();
-  const { data: categoryData, isLoading } = useGetCategoriesQuery(undefined);
+  const { data: categoryData, isLoading } = useGetEventCategoriesQuery(undefined);
+  const { data: profileData, isLoading: isProfileLoading } = useGetUserProfileQuery(undefined);
 
-  if (isLoading) {
+  if (isLoading || isProfileLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spin></Spin>
+        <Spin />
       </div>
     );
   }
 
-  //   const categoryOptions = categoryData?.data?.map((category: any) => ({
-  //     value: category._id,
-  //     label: category.categoryName,
-  //   }));
-
-  const cat = categoryData?.data?.data || [];
-  //   console.log(cat);
+  const cat = categoryData?.data || [];
+  const userId = profileData?.data?._id || '';
 
   const onSubmit = async (values: any) => {
     try {
-      const res = await createEvent(values).unwrap();
+      const formattedData = {
+        ...values,
+        user: userId,
+        category: Array.isArray(values.category) ? values.category[0] : values.category,
+        eventDate: values.eventDate?.format('YYYY-MM-DD'),
+      };
+
+      const res = await createEvent(formattedData).unwrap();
       if (res.success) {
         toast.success(res?.message);
         form.resetFields();
       }
     } catch (error: any) {
-      toast.error(error?.message || 'Something went wrong');
+      toast.error(error?.data?.message || 'Something went wrong');
     }
-    console.log(values);
-    form.resetFields();
   };
 
   return (
-    <div className=" ">
-      <div className="text-center">
+    <div>
+      <div className="text-center mb-6">
         <h2 className="text-2xl font-bold mb-2">Add a new event</h2>
         <p className="text-gray-600">Keep your celebrations organized and never miss a special moment!</p>
       </div>
       <Form
         layout="vertical"
         form={form}
-        name="basic"
+        name="add-event-form"
         requiredMark={false}
         initialValues={{ remember: true }}
         onFinish={onSubmit}
@@ -65,11 +66,22 @@ const AddEvent = () => {
         <Form.Item
           label="Event Category"
           name="category"
-          rules={[{ required: true, message: 'Please select category!' }]}
+          rules={[{ required: true, message: 'Please select or enter a category!' }]}
+          tooltip="Can't find a suitable category? Just type your own!"
         >
           <Select
-            placeholder="Select category"
-            options={cat?.map((category: any) => ({ value: category._id, label: category.categoryName }))}
+            mode="tags"
+            placeholder="Select or add a category"
+            value={form.getFieldValue('category')}
+            onChange={(val) => {
+              const latest = val[val.length - 1]; // Grab the most recent entry
+              form.setFieldsValue({ category: [latest] }); // Force single value array
+            }}
+            tokenSeparators={[',']}
+            options={cat?.map((category: any) => ({
+              value: category.eventCategory,
+              label: category.eventCategory,
+            }))}
           />
         </Form.Item>
 

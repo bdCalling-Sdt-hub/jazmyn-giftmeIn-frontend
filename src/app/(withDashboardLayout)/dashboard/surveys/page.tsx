@@ -9,7 +9,7 @@ const profileSurveyPage = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
-  const questions = surveyQuestions?.data[0]?.body;
+  const questions = surveyQuestions?.data?.[0]?.body;
   console.log(questions);
 
   return (

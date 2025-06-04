@@ -10,9 +10,24 @@ const authApi = api.injectEndpoints({
       }),
     }),
 
+    // googleLogin: builder.mutation({
+    //   query: () => ({
+    //     url: '/auth/google',
+    //     method: 'GET',
+    //   }),
+    // }), // Add this mutation for Google log in
+
     signUp: builder.mutation({
       query: (data) => ({
         url: '/user/register',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    otpVerify: builder.mutation({
+      query: (data) => ({
+        url: '/auth/verify-email',
         method: 'POST',
         body: data,
       }),
@@ -50,5 +65,7 @@ export const {
   useSignUpMutation,
   useChangePasswordMutation,
   useGetUserProfileQuery,
+  // useGoogleLoginMutation,
   useUpdateUserProfileMutation,
+  useOtpVerifyMutation,
 } = authApi;

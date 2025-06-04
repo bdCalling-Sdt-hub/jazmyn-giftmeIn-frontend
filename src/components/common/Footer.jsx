@@ -10,18 +10,13 @@ const Footer = () => {
         backgroundImage: 'url(/images/image.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        color: "white",
-        backgroundColor: "black",
+        color: 'white',
+        backgroundColor: 'black',
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center sm:text-left">
-        <div className='w-full sm:w-[282px] mx-auto sm:mx-0'>
-          <Image
-            src="/logo/logo.png"
-            width={131}
-            height={53}
-            alt="GiftmeIn logo"
-          />
+        <div className="w-full sm:w-[282px] mx-auto sm:mx-0">
+          <Image src="/logo/logo.png" width={131} height={53} alt="GiftmeIn logo" />
           <p className="text-sm leading-6 mt-3">
             GiftmeIn helps you celebrate every special moment with personalized gifts and seamless delivery.
           </p>
@@ -34,9 +29,21 @@ const Footer = () => {
             <div className="w-8 h-1 bg-[#FFFFFF33] rounded"></div>
           </div>
           <ul className="space-y-2">
-            <li><Link href="/about" className="text-sm hover:underline">About Us</Link></li>
-            <li><Link href="/contact" className="text-sm hover:underline">Contact Us</Link></li>
-            <li><Link href="/plans" className="text-sm hover:underline">Subscription Plans</Link></li>
+            <li>
+              <Link href="/about" className="text-sm hover:underline">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="text-sm hover:underline">
+                Contact Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/plans" className="text-sm hover:underline">
+                Subscription Plans
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -47,9 +54,21 @@ const Footer = () => {
             <div className="w-8 h-1 bg-[#FFFFFF33] rounded"></div>
           </div>
           <ul className="space-y-2">
-            <li><Link href="/terms" className="text-sm hover:underline">Terms of Service</Link></li>
-            <li><Link href="/privacy" className="text-sm hover:underline">Privacy Policy</Link></li>
-            <li><Link href="/faq" className="text-sm hover:underline">FAQ</Link></li>
+            <li>
+              <Link href="/terms" className="text-sm hover:underline">
+                Terms of Service
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="text-sm hover:underline">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/faq" className="text-sm hover:underline">
+                FAQ
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -60,16 +79,19 @@ const Footer = () => {
             <div className="w-8 h-1 bg-[#FFFFFF33] rounded"></div>
           </div>
           <ul className="space-y-4">
-            <li>
+            {/* <li>
               <Link href="/contact" className="flex justify-center sm:justify-start items-center gap-3 text-sm">
                 <div className="bg-primary p-2 rounded-full">
                   <Image src="/logo/call.png" height={16} width={16} alt="Call icon" />
                 </div>
                 <span>Text Support: 317-449-3031</span>
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link href="mailto:support@giftmein.com" className="flex justify-center sm:justify-start items-center gap-3 text-sm">
+              <Link
+                href="mailto:support@giftmein.com"
+                className="flex justify-center sm:justify-start items-center gap-3 text-sm"
+              >
                 <div className="bg-primary p-2 rounded-full">
                   <Image src="/logo/message.png" height={16} width={16} alt="Email icon" />
                 </div>

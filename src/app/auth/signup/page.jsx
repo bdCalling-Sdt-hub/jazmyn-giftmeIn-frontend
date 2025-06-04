@@ -41,8 +41,9 @@ const page = () => {
       const res = await signUp(userData).unwrap();
       if (res.success) {
         toast.success('Signed up successfully! Please Login!');
+        router.push(`/auth/verifyOTP?email=${encodeURIComponent(data.email)}`);
 
-        router.push('/auth/login');
+        // router.push('/auth/login');
       }
     } catch (error) {
       console.log(error);

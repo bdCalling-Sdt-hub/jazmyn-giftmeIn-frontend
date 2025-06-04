@@ -10,6 +10,7 @@ import { FaExclamation } from 'react-icons/fa';
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import { getImageUrl } from '@/util/getImgUrl';
 import { TbBasketQuestion } from 'react-icons/tb';
+import Cookies from 'js-cookie';
 
 const DashboardSidebar = () => {
   const [previewImage, setPreviewImage] = useState('');
@@ -53,6 +54,7 @@ const DashboardSidebar = () => {
 
       onOk: () => {
         toast.success('Logout successfully');
+        Cookies.remove('accessToken');
         localStorage.removeItem('authToken');
         sessionStorage.removeItem('authToken');
         window.location.href = '/auth/login';

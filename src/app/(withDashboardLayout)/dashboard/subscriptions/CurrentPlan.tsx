@@ -38,10 +38,10 @@ const CurrentPlan = () => {
               <Check className="w-4 h-4 text-white" />
             </div>
             <div className="text-left">
-              <h3 className="font-semibold text-lg">{subscription?.package?.category}</h3>
+              <h3 className="font-semibold text-lg">{subscription?.package?.name}</h3>
               <p className="text-gray-600">{subscription?.package?.description}</p>
               <p className="text-primary font-semibold text-lg mt-1">
-                ${subscription?.package?.price} / {subscription?.package?.duration}
+                ${subscription?.amountPaid} / {subscription?.package?.duration}
               </p>
             </div>
           </div>

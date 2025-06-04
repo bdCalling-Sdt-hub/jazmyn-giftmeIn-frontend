@@ -25,7 +25,7 @@ const Product = () => {
 
   const { id } = useParams();
 
-  const { data: productData, isLoading } = useGetSingleShopifyProductQuery(id);
+  const { data: productData, isLoading } = useGetSingleProductQuery(id);
   // const { data: singleShopifyProduct, isLoading: shopifyProductLoading } = useGetSingleProductQuery(id);
   const [addToCart] = useAddToCartMutation();
   const { data: userProfile, isLoading: userProfileLoading } = useGetUserProfileQuery();
@@ -113,10 +113,9 @@ const Product = () => {
 
   return (
     <>
-      {/* <div className="md:p-28 p-8 max-w-7xl mx-auto font-fontTwo">
+      <div className="md:p-28 p-8 max-w-7xl mx-auto font-fontTwo">
         <div className="md:flex items-center justify-center gap-5">
           <div className="md:w-[45%] flex flex-col items-center">
-        
             <div className="w-full mb-5">
               <img
                 className="md:w-[600px] rounded-2xl object-contain w-[350px] h-[300px] md:h-[440px]"
@@ -127,12 +126,12 @@ const Product = () => {
 
             <div className="grid grid-cols-4 gap-2">
               <img
-                src={getImageUrl(product?.additional)}
+                src={getImageUrl(product?.additional?.[0])}
                 alt="Thumbnail 1"
                 className="cursor-pointer object-contain md:h-28 md:w-28 h-20 w-20 transition-transform transform hover:scale-110"
-                onClick={() => setMainImage(product?.additional[0])}
+                onClick={() => setMainImage(product?.additional?.[0])}
               />
-              {product?.additional && (
+              {product?.additional?.[1] && (
                 <img
                   src={getImageUrl(product?.additional[1])}
                   alt="Thumbnail 2"
@@ -140,7 +139,7 @@ const Product = () => {
                   onClick={() => setMainImage(product?.additional[1])}
                 />
               )}
-              {product?.additional && (
+              {product?.additional?.[2] && (
                 <img
                   src={getImageUrl(product?.additional[2])}
                   alt="Thumbnail 3"
@@ -148,7 +147,7 @@ const Product = () => {
                   onClick={() => setMainImage(product?.additional[2])}
                 />
               )}
-              {product?.additional && (
+              {product?.additional?.[3] && (
                 <img
                   src={getImageUrl(product?.additional[3])}
                   alt="Thumbnail 4"
@@ -261,7 +260,7 @@ const Product = () => {
               <span className="font-bold">Tags: </span> {product?.tag?.map((tag) => tag).join(', ')}
             </h1>
             <h1>
-              <span className="font-bold">Category:</span> {product?.productCategory?.categoryName}
+              <span className="font-bold">Category:</span> {product?.category}
             </h1>
           </div>
         </div>
@@ -269,16 +268,16 @@ const Product = () => {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: '#FC2FAD', 
+                colorPrimary: '#FC2FAD',
               },
             }}
           >
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
           </ConfigProvider>
         </div>
-      </div> */}
+      </div>
 
-      <div dangerouslySetInnerHTML={{ __html: product?.body_html }} />
+      {/* <div dangerouslySetInnerHTML={{ __html: product?.body_html }} /> */}
 
       <div className="mb-10 px-8 max-w-7xl mx-auto font-fontTwo">
         <h1 className="clash md:text-4xl text-2xl border-b-4 border-[#FC2FAD] md:w-[28%] w-[70%]">

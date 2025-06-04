@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { ArrowRight } from 'lucide-react';
 import './Banner.css';
+import Link from 'next/link';
 
 export default function BannerCarousel() {
   return (
@@ -49,10 +50,12 @@ export default function BannerCarousel() {
                     Track birthdays, plan surprises, and get the coolest gifts <br />
                     delivered—effortlessly.
                   </p>
-                  <button className="flex items-center gap-[10px] sm:w-[197px] w-[150px] bg-primary sm:text-[20px] text-sm font-semibold sm:leading-[30px] leading-[10px] text-white px-[13px] sm:py-[17px] py-[15px] rounded-[12px] transition-all">
-                    Get Started
-                    <ArrowRight size={20} />
-                  </button>
+                  <Link href={'/subscriptions'}>
+                    <button className="flex items-center gap-[10px] sm:w-[197px] w-[150px] bg-primary sm:text-[20px] text-sm font-semibold sm:leading-[30px] leading-[10px] text-white px-[13px] sm:py-[17px] py-[15px] rounded-[12px] transition-all">
+                      Get Started
+                      <ArrowRight size={20} />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

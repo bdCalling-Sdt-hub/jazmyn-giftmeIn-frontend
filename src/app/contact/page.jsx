@@ -45,7 +45,7 @@ const page = () => {
             </h2>
             <div className="bg-[#DFE0E4] h-[1px] mt-3"></div>
             <div className="mt-8 space-y-6">
-              <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow">
+              {/* <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow">
                 <div className="p-5 bg-white border border-gray-200 rounded-full">
                   <Image src={'/logo/phone.png'} width={22} height={22} alt="phone" />
                 </div>
@@ -53,7 +53,7 @@ const page = () => {
                   <h4 className="text-base font-semibold text-gray-900">Phone</h4>
                   <p className="text-sm text-[#65728E]">317-449-3031</p>
                 </div>
-              </div>
+              </div> */}
               <div className="mt-8 space-y-6">
                 <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
                   <div className="p-5 bg-white border border-gray-200 rounded-full">

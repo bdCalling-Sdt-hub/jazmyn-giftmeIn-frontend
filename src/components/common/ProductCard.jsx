@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
       <div className="flex flex-col h-full">
         <div className="relative">
           <Image
-            src={getImageUrl(product?.image?.src)}
+            src={getImageUrl(product?.feature)}
             alt={product?.title}
             className="h-[250px] w-full rounded-2xl object-cover p-4 overflow-hidden"
             width={250}
@@ -24,10 +24,10 @@ const ProductCard = ({ product }) => {
 
         <div className="flex flex-col justify-between flex-grow p-4">
           <div className="flex items-center flex-col justify-between mb-4">
-            <h1 className="text-[16px] tracking-wide font-bold text-center line-clamp-2">{product.title}</h1>
-            <p className="text-2xl tracking-wide font-normal mt-2">${product?.variants[0]?.price}</p>
+            <h1 className="text-[16px] tracking-wide font-bold text-center line-clamp-2">{product?.productName}</h1>
+            <p className="text-2xl tracking-wide font-normal mt-2">${product?.discountedPrice}</p>
           </div>
-          <Link href={`/shop/${product.id}`} className="mt-auto">
+          <Link href={`/shop/${product._id}`} className="mt-auto">
             <button className="border-2 border-primary text-primary w-full h-[47px] rounded-xl font-semibold text-[20px] tracking-wide group-hover:bg-primary group-hover:text-white transition-colors">
               View Details
             </button>

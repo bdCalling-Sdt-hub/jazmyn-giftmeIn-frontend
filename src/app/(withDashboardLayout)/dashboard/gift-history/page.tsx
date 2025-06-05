@@ -14,48 +14,7 @@ interface GiftHistoryData {
   status: string;
 }
 
-const giftHistoryData: GiftHistoryData[] = [
-  {
-    key: '1',
-    dated: '10 March, 2024',
-    event: "Emma's Birthday",
-    recipient: 'Emma Watson',
-    gift: 'Personalized Gift',
-    status: 'Delivered',
-  },
-  {
-    key: '2',
-    dated: '10 March, 2024',
-    event: "Emma's Birthday",
-    recipient: 'Emma Watson',
-    gift: 'Personalized Gift',
-    status: 'Delivered',
-  },
-  {
-    key: '3',
-    dated: '10 March, 2024',
-    event: "Emma's Birthday",
-    recipient: 'Emma Watson',
-    gift: 'Personalized Gift',
-    status: 'Delivered',
-  },
-  {
-    key: '4',
-    dated: '10 March, 2024',
-    event: "Emma's Birthday",
-    recipient: 'Emma Watson',
-    gift: 'Personalized Gift',
-    status: 'Delivered',
-  },
-  {
-    key: '5',
-    dated: '10 March, 2024',
-    event: "Emma's Birthday",
-    recipient: 'Emma Watson',
-    gift: 'Personalized Gift',
-    status: 'Delivered',
-  },
-];
+const giftHistoryData: GiftHistoryData[] = [];
 
 const columns = [
   {
@@ -108,7 +67,7 @@ const GiftHistoryPage = () => {
             <div>
               <h3 className="text-[#FF1493] font-medium mb-2">Gift Balance</h3>
               <div className="text-3xl font-bold text-[#FF1493] mb-2">${subscription?.balance || 0}</div>
-              <p className="text-sm text-gray-600">Grows monthly: 60% of your plan + $15 per add-on gift</p>
+              <p className="text-sm text-gray-600">50% of your subscription balance was added to your gift balance</p>
             </div>
             <div className="bg-[#FF1493] p-3 rounded-full">
               <CreditCard className="w-6 h-6 text-white" />

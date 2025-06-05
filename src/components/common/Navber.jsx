@@ -15,6 +15,7 @@ const navLinks = [
   { name: 'Shop', path: '/shop' },
   { name: 'Subscriptions', path: '/subscriptions' },
   { name: 'About us', path: '/about' },
+  { name: 'FAQ', path: '/faq' },
   { name: 'Contact us', path: '/contact' },
   // { name: 'Survey Questions', path: '/surveyQuestions' },
 ];

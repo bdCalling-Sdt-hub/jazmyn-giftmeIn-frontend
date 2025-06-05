@@ -6,6 +6,7 @@ import Offers from '@/components/Landing/Offers';
 import PerfectChoise from '@/components/Landing/PerfectChoise';
 import Subscription from '@/components/Landing/Subscription';
 import Testimonials from '@/components/Landing/Testimonials';
+import FaqSection from '@/components/Landing/FaqSection';
 
 const page = () => {
   return (
@@ -15,6 +16,7 @@ const page = () => {
       <Offers />
       <Subscription />
       <PerfectChoise />
+      <FaqSection />
       <Testimonials />
     </div>
   );

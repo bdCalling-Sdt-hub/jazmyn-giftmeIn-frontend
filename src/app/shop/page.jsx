@@ -89,6 +89,8 @@ const page = () => {
       user: userId,
     };
 
+    console.log(data);
+
     try {
       const res = await createWishList(data).unwrap();
       if (res.success) {
@@ -207,13 +209,13 @@ const page = () => {
                     </div>
                     {wishlistedProductIds.includes(product.id) ? (
                       <FaHeart
-                        onClick={() => handleAddToWishlist(product.id)}
+                        onClick={() => handleAddToWishlist(product._id)}
                         className="absolute top-4 -right-3 text-red-500 cursor-pointer"
                         size={24}
                       />
                     ) : (
                       <FaHeart
-                        onClick={() => handleAddToWishlist(product.id)}
+                        onClick={() => handleAddToWishlist(product._id)}
                         className="absolute cursor-pointer top-4 -right-3 text-black"
                         size={24}
                       />

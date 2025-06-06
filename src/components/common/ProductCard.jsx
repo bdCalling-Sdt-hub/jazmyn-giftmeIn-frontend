@@ -7,7 +7,7 @@ import { getImageUrl } from '@/util/getImgUrl';
 import { FaHeart } from 'react-icons/fa';
 
 const ProductCard = ({ product }) => {
-  console.log(product);
+  // console.log(product);
 
   return (
     <div className="relative border-2 rounded-2xl md:w-[290px] h-full group bg-white bg-opacity-30 hover:border-primary">

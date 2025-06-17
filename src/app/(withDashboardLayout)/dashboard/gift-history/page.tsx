@@ -1,5 +1,6 @@
 'use client';
 
+import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import { useGetCurrentSubscriptionQuery } from '@/redux/apiSlices/cartSlice';
 import { Input, Table } from 'antd';
 import { SearchIcon } from 'lucide-react';
@@ -50,12 +51,16 @@ const columns = [
 ];
 
 const GiftHistoryPage = () => {
+  const { data: profile, isLoading: isProfileLoading } = useGetUserProfileQuery(undefined);
   const { data: currentSubscription, isLoading } = useGetCurrentSubscriptionQuery(undefined);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isProfileLoading) return <div>Loading...</div>;
 
-  const subscription = currentSubscription?.data[0];
-  console.log(subscription);
+  const userData = profile?.data;
+  // console.log(userData);
+
+  const subscription = currentSubscription?.data?.find((sub: any) => sub?.user?._id === userData?._id);
+  // console.log(subscription);
 
   return (
     <div className=" space-y-6">

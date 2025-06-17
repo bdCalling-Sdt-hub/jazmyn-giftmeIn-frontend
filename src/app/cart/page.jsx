@@ -22,17 +22,19 @@ const Cart = () => {
   const updateQuantity = async (record, newQuantity) => {
     const data = {
       quantity: newQuantity,
-      cartItemId: record?._id,
+      variationId: record?.variations?.[0]?._id,
     };
-    console.log(record, newQuantity);
+    // console.log('dfgbsdgbsxbsdfbsdf', record);
     const itemToUpdate = cartItems.find((item) => item._id === record?._id);
+    console.log(itemToUpdate);
     if (itemToUpdate) {
-      await updateCart({ id: itemToUpdate._id, data });
+      await updateCart({ id: record._id, data });
     }
   };
 
   // Remove item from cart
   const handleRemoveItem = async (id) => {
+    console.log(id);
     try {
       const response = await deleteFromCart(id).unwrap();
       if (response.success) {
@@ -47,7 +49,7 @@ const Cart = () => {
 
   // Calculate total price
   const totalPrice = cartItems?.reduce((sum, item) => {
-    const subtotal = item?.variations?.product[0]?.discountedPrice * item?.variations?.quantity;
+    const subtotal = item?.variations?.[0]?.product?.discountedPrice * item?.variations?.[0]?.quantity;
     return sum + (subtotal || 0);
   }, 0);
 
@@ -59,11 +61,11 @@ const Cart = () => {
       render: (_, record) => (
         <div className="flex items-center gap-4">
           <img
-            src={getImageUrl(record?.variations?.product[0]?.feature)}
-            alt={record?.variations?.product[0]?.productName}
+            src={getImageUrl(record?.variations?.[0]?.product?.feature)}
+            alt={record?.variations?.[0]?.product?.productName}
             className="w-16 h-16 object-cover"
           />
-          <span>{record?.variations?.product[0]?.productName}</span>
+          <span>{record?.variations?.[0]?.product?.productName}</span>
         </div>
       ),
     },
@@ -71,7 +73,7 @@ const Cart = () => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      render: (_, record) => <span>${record?.variations?.product[0]?.discountedPrice?.toFixed(2)}</span>,
+      render: (_, record) => <span>${record?.variations?.[0]?.product?.discountedPrice?.toFixed(2)}</span>,
     },
     {
       title: 'Quantity',
@@ -84,15 +86,18 @@ const Cart = () => {
             <div className="flex border font-semibold p-2 rounded-2xl border-gray-300 items-center gap-3">
               <button
                 onClick={() =>
-                  updateQuantity(record, record?.variations?.quantity > 1 ? record?.variations?.quantity - 1 : 1)
+                  updateQuantity(
+                    record,
+                    record?.variations?.[0]?.quantity > 1 ? record?.variations?.[0]?.quantity - 1 : 1,
+                  )
                 }
                 className="border bg-gray-200 rounded-2xl px-3 py-1"
               >
                 -
               </button>
-              <span className="text-xl">{record?.variations?.quantity}</span>
+              <span className="text-xl">{record?.variations?.[0]?.quantity}</span>
               <button
-                onClick={() => updateQuantity(record, record?.variations?.quantity + 1)}
+                onClick={() => updateQuantity(record, record?.variations?.[0]?.quantity + 1)}
                 className="border bg-gray-200 rounded-2xl px-3 py-1"
               >
                 +
@@ -107,7 +112,9 @@ const Cart = () => {
       dataIndex: 'subtotal',
       key: 'subtotal',
       render: (_, record) => (
-        <span>${(record?.variations?.product[0]?.discountedPrice * record?.variations?.quantity)?.toFixed(2)}</span>
+        <span>
+          ${(record?.variations?.[0]?.product?.discountedPrice * record?.variations?.[0]?.quantity)?.toFixed(2)}
+        </span>
       ),
     },
     {

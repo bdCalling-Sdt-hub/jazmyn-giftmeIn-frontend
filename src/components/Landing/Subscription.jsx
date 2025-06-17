@@ -29,7 +29,7 @@ const Subscription = ({ route }) => {
     return <div>Loading...</div>;
   }
 
-  const packages = subscriptionPackages?.data;
+  const packages = subscriptionPackages?.data?.filter((pkg) => pkg.isActive === true);
   const email = userProfile?.data?.email || [];
   // console.log(userData);
 

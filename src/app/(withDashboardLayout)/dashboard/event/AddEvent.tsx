@@ -63,6 +63,13 @@ const AddEvent = () => {
           <Input placeholder="What's the occasion? (e.g., Sarah's Birthday)" />
         </Form.Item>
 
+        <Form.Item label="Phone" name="phone" rules={[{ required: true, message: 'Please input contact number!' }]}>
+          <Input placeholder="valid phone number" />
+        </Form.Item>
+        <Form.Item label="Address" name="address" rules={[{ required: true, message: 'Please input contact number!' }]}>
+          <Input placeholder="valid phone number" />
+        </Form.Item>
+
         <Form.Item
           label="Event Category"
           name="category"

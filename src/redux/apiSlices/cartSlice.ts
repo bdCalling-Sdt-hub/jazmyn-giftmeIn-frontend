@@ -20,11 +20,14 @@ const cartApi = api.injectEndpoints({
     }),
 
     updateCartQuantity: builder.mutation({
-      query: ({ data, id }) => ({
-        url: `/cart/${id}`,
-        method: 'PUT',
-        body: data,
-      }),
+      query: ({ data, id }) => {
+        console.log('in redux => ', data, id);
+        return {
+          url: `/cart/${id}`,
+          method: 'PUT',
+          body: data,
+        };
+      },
       invalidatesTags: ['cart'],
     }),
 
@@ -45,6 +48,15 @@ const cartApi = api.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ['order'],
+    }),
+
+    createOrderWithGiftBalance: builder.mutation({
+      query: (data) => ({
+        url: '/product-history',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['order', 'cart'],
     }),
 
     //wishlist
@@ -97,6 +109,7 @@ export const {
   useGetCartQuery,
   useUpdateCartQuantityMutation,
   useCreateOrderMutation,
+  useCreateOrderWithGiftBalanceMutation,
   useGetWishlistQuery,
   useDeleteFromCartMutation,
   useCreateWishListMutation,

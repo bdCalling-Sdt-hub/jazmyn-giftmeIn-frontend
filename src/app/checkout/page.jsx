@@ -93,6 +93,7 @@ const CheckoutPage = () => {
         },
         products: cartData?.map((item) => ({
           id: item?._id,
+          productName: item?.variations?.[0]?.product?.productName,
           price: item?.variations?.[0]?.product?.discountedPrice,
           quantity: item?.variations?.[0]?.quantity,
           size: item?.variations?.[0]?.size,

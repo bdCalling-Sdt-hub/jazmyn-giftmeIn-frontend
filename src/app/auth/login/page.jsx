@@ -173,7 +173,7 @@ const page = () => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
           type="button"
-          onClick={() => (window.location.href = 'https://rakib5000.binarybards.online/api/v1/auth/google')}
+          onClick={() => (window.location.href = 'https://api.giftmein.com/api/v1/auth/google/callback')}
           className="w-full mt-4 flex items-center justify-center gap-2 py-2 px-4 text-gray-800 bg-white border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
         >
           <Image src="/logo/google.png" height={18} width={18} alt="google login" />

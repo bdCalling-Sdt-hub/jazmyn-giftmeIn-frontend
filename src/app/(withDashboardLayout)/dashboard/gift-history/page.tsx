@@ -60,7 +60,7 @@ const GiftHistoryPage = () => {
   // console.log(userData);
 
   const subscription = currentSubscription?.data?.find((sub: any) => sub?.user?._id === userData?._id);
-  // console.log(subscription);
+  console.log(subscription);
 
   return (
     <div className=" space-y-6">
@@ -85,7 +85,7 @@ const GiftHistoryPage = () => {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-[#FF1493] font-medium mb-2">Spent</h3>
-              <div className="text-3xl font-bold text-[#FF1493] mb-2">$0</div>
+              <div className="text-3xl font-bold text-[#FF1493] mb-2">${subscription?.spent || 0}</div>
               <p className="text-sm text-gray-600">You've spent $50 this month on 2 thoughtful gifts.</p>
             </div>
             <div className="bg-[#FF1493] p-3 rounded-full">
@@ -99,7 +99,7 @@ const GiftHistoryPage = () => {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-[#8B5CF6] font-medium mb-2">Gifting Potential</h3>
-              <div className="text-3xl font-bold text-[#8B5CF6] mb-2">3</div>
+              <div className="text-3xl font-bold text-[#8B5CF6] mb-2">{subscription?.giftingPotential || 0}</div>
               <p className="text-sm text-gray-600">Covers up to 3 standard gifts this season</p>
             </div>
             <div className="bg-[#8B5CF6] p-3 rounded-full">

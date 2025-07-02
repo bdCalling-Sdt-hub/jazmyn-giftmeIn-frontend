@@ -22,6 +22,18 @@ const eventApi = api.injectEndpoints({
       providesTags: ['event'],
     }),
 
+    updateEvent: builder.mutation({
+      query: (data) => {
+        console.log('in redux', data);
+        return {
+          url: `/event/${data.id}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+      invalidatesTags: ['event'],
+    }),
+
     getEventCategories: builder.query({
       query: () => ({
         url: '/event-category',
@@ -32,4 +44,5 @@ const eventApi = api.injectEndpoints({
   }),
 });
 
-export const { useCreateEventMutation, useGetEventsQuery, useGetEventCategoriesQuery } = eventApi;
+export const { useCreateEventMutation, useGetEventsQuery, useGetEventCategoriesQuery, useUpdateEventMutation } =
+  eventApi;

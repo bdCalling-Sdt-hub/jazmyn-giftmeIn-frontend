@@ -10,7 +10,7 @@ import { Form, Input, Select, DatePicker, Button, Spin, Switch } from 'antd';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
 
-const AddEvent = ({ event }: { event?: any }) => {
+const AddEvent = ({ event, onClose }: { event?: any; onClose?: () => void }) => {
   const [form] = Form.useForm();
 
   const [createEvent] = useCreateEventMutation();

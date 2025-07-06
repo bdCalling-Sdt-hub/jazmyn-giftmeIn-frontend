@@ -3,18 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { Menu, Modal, Upload } from 'antd';
 import Image from 'next/image';
 import { Edit2, User, Calendar, Gift, ShoppingBag, Heart, Crown, Settings, LogOut, CameraIcon } from 'lucide-react';
-import { UploadChangeParam } from 'antd/es/upload';
+import { UploadChangeParam, UploadFile } from 'antd/es/upload';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { FaExclamation } from 'react-icons/fa';
-import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
+import { useGetUserProfileQuery, useUpdateUserProfileMutation } from '@/redux/apiSlices/authSlice';
 import { getImageUrl } from '@/util/getImgUrl';
 import { TbBasketQuestion } from 'react-icons/tb';
 import Cookies from 'js-cookie';
+import { RcFile } from 'antd/es/upload/interface';
 
 const DashboardSidebar = () => {
   const [previewImage, setPreviewImage] = useState('');
-  const { data: profileData, isLoading } = useGetUserProfileQuery(undefined);
+  const [uploading, setUploading] = useState(false);
+  const { data: profileData, isLoading, refetch } = useGetUserProfileQuery(undefined);
+  const [updateProfile] = useUpdateUserProfileMutation();
 
   useEffect(() => {
     if (profileData?.data) {
@@ -27,15 +30,53 @@ const DashboardSidebar = () => {
   }
 
   const profile = profileData?.data;
-  // console.log(profile);
 
-  const handleFileChange = ({ file }: UploadChangeParam<any>) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file.originFileObj);
-    reader.onload = () => {
-      setPreviewImage(reader.result as string);
-    };
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      toast.error('You can only upload JPG/PNG files!');
+      return false;
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      toast.error('Image must be smaller than 2MB!');
+      return false;
+    }
+    return true;
   };
+
+  const handleFileChange = async (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === 'done') {
+      try {
+        setUploading(true);
+        const file = info.file.originFileObj as RcFile;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        // Preview the image
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setPreviewImage(reader.result as string);
+        };
+
+        // Update profile
+        const result = await updateProfile(formData).unwrap();
+
+        if (result.success) {
+          toast.success('Profile picture updated successfully');
+          refetch(); // Refresh profile data
+        }
+      } catch (error) {
+        toast.error('Failed to update profile picture');
+        console.error('Error updating profile:', error);
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
+
   const handleLogout = () => {
     Modal.confirm({
       centered: true,
@@ -47,11 +88,9 @@ const DashboardSidebar = () => {
       okButtonProps: {
         style: { backgroundColor: '#F82BA9', borderColor: '#ff4d4f', color: '#fff' },
       },
-
       cancelButtonProps: {
         style: { color: '#F82BA9', borderColor: 'transparent', fontWeight: 'bold' },
       },
-
       onOk: () => {
         toast.success('Logout successfully');
         Cookies.remove('accessToken');
@@ -61,6 +100,7 @@ const DashboardSidebar = () => {
       },
     });
   };
+
   const sidebarItemsMentees = [
     {
       key: 'profile',
@@ -119,10 +159,16 @@ const DashboardSidebar = () => {
             height={500}
             src={getImageUrl(previewImage) || 'https://i.ibb.co.com/yN2vT01/me.jpg'}
             alt="Profile"
-            className="w-full h-full  object-cover rounded-full"
+            className="w-full h-full object-cover rounded-full"
           />
           <div className="absolute right-0 bottom-0 cursor-pointer bg-white w-8 h-8 rounded-lg text-center flex items-center justify-center">
-            <Upload showUploadList={false} onChange={handleFileChange}>
+            <Upload
+              showUploadList={false}
+              onChange={handleFileChange}
+              beforeUpload={beforeUpload}
+              accept="image/jpeg,image/png"
+              disabled={uploading}
+            >
               <div className="bg-primary p-2 rounded-full text-white">
                 <CameraIcon size={20} />
               </div>
@@ -144,7 +190,7 @@ const DashboardSidebar = () => {
         mode="vertical"
         defaultSelectedKeys={['profile']}
         className="w-full"
-      ></Menu>
+      />
     </div>
   );
 };

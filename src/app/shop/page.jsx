@@ -203,11 +203,11 @@ const page = () => {
             ) : filteredProductsData && filteredProductsData.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-10 grid-cols-1">
                 {filteredProductsData?.map((product) => (
-                  <div key={product.id} className="relative h-full">
+                  <div key={product._id} className="relative h-full">
                     <div className="h-full flex flex-col">
                       <ProductCard product={product} />
                     </div>
-                    {wishlistedProductIds.includes(product.id) ? (
+                    {wishlistedProductIds.includes(product._id) ? (
                       <FaHeart
                         onClick={() => handleAddToWishlist(product._id)}
                         className="absolute top-4 -right-3 text-red-500 cursor-pointer"

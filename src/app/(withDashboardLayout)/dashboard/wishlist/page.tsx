@@ -50,18 +50,18 @@ const WishlistPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wishlist.map((item: any, index: number) => (
+        {wishlist?.map((item: any, index: number) => (
           <div key={index} className="bg-[#FFF1F8] rounded-lg overflow-hidden group">
             <div className="relative">
               {/* Image Container */}
               <div className="relative aspect-square">
                 <img
-                  src={getImageUrl(item?.event?.feature)}
-                  alt={item?.event?.productName}
+                  src={getImageUrl(item?.product?.feature)}
+                  alt={item?.product?.productName}
                   className="w-full h-full p-2 rounded-md object-cover"
                 />
                 <button
-                  onClick={() => handleAddToWishlist(item?.event?._id)}
+                  onClick={() => handleAddToWishlist(item?.product?._id)}
                   className="absolute top-3 right-3 text-primary hover:scale-110 transition"
                 >
                   <Heart className="w-6 h-6 fill-primary" />
@@ -71,8 +71,8 @@ const WishlistPage = () => {
 
             {/* Content */}
             <div className="p-4 space-y-2">
-              <h3 className="font-semibold text-lg text-center">{item?.event?.productName}</h3>
-              <p className="text-primary text-xl font-bold text-center">${item?.event?.discountedPrice}</p>
+              <h3 className="font-semibold text-lg text-center">{item?.product?.productName}</h3>
+              <p className="text-primary text-xl font-bold text-center">${item?.product?.discountedPrice}</p>
               <button className="w-full bg-primary text-white py-2 rounded-lg hover:opacity-90 transition flex items-center justify-center gap-2">
                 <ShoppingCart className="w-5 h-5" />
                 Add To Cart

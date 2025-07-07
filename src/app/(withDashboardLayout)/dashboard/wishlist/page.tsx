@@ -42,7 +42,7 @@ const WishlistPage = () => {
         <h2 className="text-2xl font-bold">Wishlist</h2>
         <div className="relative w-[300px]">
           <Input
-            placeholder="Search..."
+            placeholder="Search...."
             className="pl-10 h-10 rounded-lg"
             suffix={<SearchIcon className="w-5 h-5 text-gray-400" />}
           />

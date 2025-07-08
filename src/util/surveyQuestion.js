@@ -95,6 +95,12 @@ export const surveyQuestions = [
   },
   {
     id: 10,
+    type: 'single-choice',
+    question: 'Do you prefer gift for Men, Women, or both?',
+    options: ['Men', 'Women', 'Both'],
+  },
+  {
+    id: 11,
     type: 'text',
     question: 'Do you have any allergies or items you do not want to receive?',
     placeholder: 'e.g., No peanuts, no scented candles, no leather items',

@@ -6,10 +6,8 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     // baseUrl: 'http://64.23.193.89:5000/api/v1/',
     baseUrl: 'https://api.giftmein.com/api/v1/',
-    // baseUrl: 'http://10.0.70.188:5000/api/v1/',
-    // baseUrl: 'http://10.0.70.188:5000/api/v1/',
-    // baseUrl: 'https://rakib5000.binarybards.online/api/v1/',
-    // baseUrl: 'http://167.71.173.195:5004/api/v1/',
+    // baseUrl: 'http://10.10.0.46:5000/api/v1/',
+
 
     prepareHeaders: (headers) => {
       const token = Cookies.get('accessToken');

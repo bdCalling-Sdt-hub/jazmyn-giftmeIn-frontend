@@ -95,9 +95,8 @@ const page = () => {
                     message: 'Invalid email format',
                   },
                 })}
-                className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
-                  errors.email ? 'border-red-500' : ''
-                }`}
+                className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${errors.email ? 'border-red-500' : ''
+                  }`}
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -120,9 +119,8 @@ const page = () => {
                     message: 'Password must be at least 6 characters',
                   },
                 })}
-                className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
-                  errors.password ? 'border-red-500' : ''
-                }`}
+                className={`block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${errors.password ? 'border-red-500' : ''
+                  }`}
               />
               <button
                 type="button"
@@ -173,7 +171,8 @@ const page = () => {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.95 }}
           type="button"
-          onClick={() => (window.location.href = 'https://api.giftmein.com/api/v1/auth/google/callback')}
+          // onClick={() => (window.location.href = 'https://api.giftmein.com/api/v1/auth/google/callback')}
+          onClick={() => (window.location.href = 'http://10.10.7.46:5000/api/v1/auth/google/callback')}
           className="w-full mt-4 flex items-center justify-center gap-2 py-2 px-4 text-gray-800 bg-white border border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
         >
           <Image src="/logo/google.png" height={18} width={18} alt="google login" />

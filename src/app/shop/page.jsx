@@ -81,7 +81,10 @@ const page = () => {
     product.productName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
   // Extract wishlist product IDs
-  const wishlistedProductIds = wishListData?.map((item) => item.product?._id) || [];
+
+  const wishListByUserId = wishListData?.filter((item) => item?.user === userId);
+
+  const wishlistedProductIds = wishListByUserId?.map((item) => item?.product?._id) || [];
 
   const handleAddToWishlist = async (productId) => {
     const data = {

@@ -27,7 +27,7 @@ const WishlistPage = () => {
 
   const handleAddToWishlist = async (id: string) => {
     try {
-      const res = await createWishList({ event: id, user: userId }).unwrap();
+      const res = await createWishList({ product: id, user: userId }).unwrap();
       if (res.success) {
         toast.success(res?.data?.message);
       }

@@ -6,7 +6,7 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     // baseUrl: 'http://64.23.193.89:5000/api/v1/',
     baseUrl: 'https://api.giftmein.com/api/v1/',
-    // baseUrl: 'http://10.10.0.46:5000/api/v1/',
+    // baseUrl: 'http://10.10.7.46:5000/api/v1/',
 
 
     prepareHeaders: (headers) => {

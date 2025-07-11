@@ -11,7 +11,7 @@ const CurrentPlan = () => {
   if (isLoading) return <div>Loading...</div>;
 
   const subscription = currentSubscription?.data[0];
-  console.log(subscription);
+  // console.log(subscription);
 
   return (
     <div className="bg-white border rounded-lg p-8 max-w-md  text-center">
@@ -27,8 +27,7 @@ const CurrentPlan = () => {
         </div>
       </div>
 
-      <p className="text-gray-600 mb-6">12 Gifts Sent This Year</p>
-
+      {/* <p className="text-gray-600 mb-6">{subscription?.giftSentThisYear || 0} Gifts Sent This Year</p> */}
       <h2 className="text-xl font-semibold mb-6">Your Current Subscription Plan</h2>
 
       <div className="bg-[#FFF1F8] border border-primary rounded-lg p-4 mb-6">

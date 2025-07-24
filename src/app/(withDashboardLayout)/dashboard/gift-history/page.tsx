@@ -85,7 +85,7 @@ const GiftHistoryPage = () => {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-[#FF1493] font-medium mb-2">Spent</h3>
-              <div className="text-3xl font-bold text-[#FF1493] mb-2">${subscription?.spent || 0}</div>
+              <div className="text-3xl font-bold text-[#FF1493] mb-2">${subscription?.totalSpentPrice || 0}</div>
               <p className="text-sm text-gray-600">You've spent $50 this month on 2 thoughtful gifts.</p>
             </div>
             <div className="bg-[#FF1493] p-3 rounded-full">

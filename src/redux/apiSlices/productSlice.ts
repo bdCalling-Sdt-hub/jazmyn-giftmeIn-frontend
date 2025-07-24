@@ -61,6 +61,14 @@ const authApi = api.injectEndpoints({
       }),
       providesTags: ['category'],
     }),
+
+    //gift history
+    getGiftHistory: builder.query({
+      query: () => ({
+        url: '/gift-collection/user-history',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -70,4 +78,5 @@ export const {
   useGetSingleShopifyProductQuery,
   useGetSingleProductQuery,
   useGetCategoriesQuery,
+  useGetGiftHistoryQuery,
 } = authApi;

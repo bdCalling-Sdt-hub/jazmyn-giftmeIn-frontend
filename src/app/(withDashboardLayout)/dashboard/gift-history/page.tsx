@@ -2,6 +2,7 @@
 
 import { useGetUserProfileQuery } from '@/redux/apiSlices/authSlice';
 import { useGetCurrentSubscriptionQuery } from '@/redux/apiSlices/cartSlice';
+import { useGetGiftHistoryQuery } from '@/redux/apiSlices/productSlice';
 import { Input, Table } from 'antd';
 import { SearchIcon } from 'lucide-react';
 import { CreditCard, LayoutList, Layers } from 'lucide-react';
@@ -19,27 +20,31 @@ const giftHistoryData: GiftHistoryData[] = [];
 
 const columns = [
   {
-    title: 'Dated',
-    dataIndex: 'dated',
-    key: 'dated',
+    title: 'Serial',
+    dataIndex: 'serial',
+    key: 'serial',
+    render: (_: any, record: any, index: number) => index + 1,
     className: 'font-medium',
   },
   {
     title: 'Event',
-    dataIndex: 'event',
+    dataIndex: ['event', 'eventName'],
     key: 'event',
     className: 'font-medium',
   },
   {
     title: 'Recipient',
-    dataIndex: 'recipient',
+    dataIndex: ['event', 'RecipientName'],
     key: 'recipient',
     className: 'font-medium',
   },
   {
     title: 'Gift',
-    dataIndex: 'gift',
-    key: 'gift',
+    dataIndex: 'product',
+    key: 'product',
+    render: (_: any, record: any) => (
+      <span className="font-medium">{record?.product?.map((item: any) => item.productName).join(', ')}</span>
+    ),
     className: 'font-medium',
   },
   {
@@ -53,14 +58,16 @@ const columns = [
 const GiftHistoryPage = () => {
   const { data: profile, isLoading: isProfileLoading } = useGetUserProfileQuery(undefined);
   const { data: currentSubscription, isLoading } = useGetCurrentSubscriptionQuery(undefined);
+  const { data: giftHistory, isLoading: isGiftHistoryLoading } = useGetGiftHistoryQuery(undefined);
 
-  if (isLoading || isProfileLoading) return <div>Loading...</div>;
+  if (isLoading || isProfileLoading || isGiftHistoryLoading) return <div>Loading...</div>;
 
   const userData = profile?.data;
-  // console.log(userData);
+  const giftHistoryData = giftHistory?.data;
+  console.log(giftHistoryData);
 
   const subscription = currentSubscription?.data?.find((sub: any) => sub?.user?._id === userData?._id);
-  console.log(subscription);
+  // console.log(subscription);
 
   return (
     <div className=" space-y-6">
@@ -127,6 +134,7 @@ const GiftHistoryPage = () => {
           scroll={{ x: true }}
           columns={columns}
           dataSource={giftHistoryData}
+          rowKey="_id"
           pagination={{
             pageSize: 8,
             className: 'p-4',

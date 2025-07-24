@@ -152,11 +152,11 @@ const AddEvent = ({ event, onClose }: { event?: any; onClose?: () => void }) => 
             mode="multiple"
             placeholder="Select preferences"
             options={[
-              { value: 'electronics', label: 'Electronics' },
-              { value: 'fashion', label: 'Fashion' },
-              { value: 'books', label: 'Books' },
-              { value: 'home', label: 'Home & Living' },
-              { value: 'sports', label: 'Sports' },
+              { value: 'Electronics', label: 'Electronics' },
+              { value: 'Fashion', label: 'Fashion' },
+              { value: 'Books', label: 'Books' },
+              { value: 'Home & Living', label: 'Home & Living' },
+              { value: 'Sports', label: 'Sports' },
             ]}
           />
         </Form.Item>
